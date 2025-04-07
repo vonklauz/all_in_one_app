@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 import { Footer } from "@/Layout/Footer";
+import { IParentProps } from "@/Models";
 
 
 export const metadata: Metadata = {
@@ -10,9 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: IParentProps) {
   return (
     <html lang="ru">
       <body className="antialiased">

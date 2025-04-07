@@ -1,0 +1,39 @@
+@import "../../styles/variables.scss";
+
+.label {
+    font-weight: 700;
+    display: block;
+    font-size: 1rem;
+    color: $text-gray;
+}
+
+.wrapper {
+    padding: .375rem;
+    padding-left: 0;
+    background-color: $white;
+    border-radius: .625rem;
+    border: 1px solid $line-gray;
+    display: flex;
+    align-items: center;
+    gap: .625rem;
+    position: relative;
+
+    .input {
+        height: 2.1875rem;
+    }
+}
+
+.input {
+    width: 100%;
+    display: block;
+    padding: 0 15px;
+    caret-color: inherit;
+    height: 3.0625rem;
+    color: $text-black;
+}
+
+@media (min-width: 78.5em) {
+    .label {
+        margin-bottom: .5rem;
+    }
+}

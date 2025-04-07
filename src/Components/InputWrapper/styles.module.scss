@@ -1,0 +1,31 @@
+@import "../../styles/variables.scss";
+
+.wrapper {
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background-color: $background-light-blue;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    background-color: $background-blue;
+
+    small {
+        font-size: 1rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+}
+
+.body {}
+
+@media (min-width: 78.5em) {
+
+    .header,
+    .body {
+        padding: 2rem 2.5rem;
+    }
+}
