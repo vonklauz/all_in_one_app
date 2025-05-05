@@ -1,0 +1,24 @@
+.input-wrapper {
+    padding: .375rem;
+    padding-left: 0;
+    background-color: var(--white);
+    border-radius: .625rem;
+    border: 1px solid var(--line-gray);
+    display: flex;
+    align-items: center;
+    gap: .625rem;
+    position: relative;
+}
+
+.input {
+    width: 100%;
+    display: block;
+    padding: 0 15px;
+    caret-color: inherit;
+    height: 3.0625rem;
+    color: var(--text-black);
+}
+
+.input-wrapper .input {
+    height: 2.1875rem;
+}
