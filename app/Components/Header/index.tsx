@@ -1,6 +1,6 @@
 import { SearchBar } from './SearchBar';
 import styles from './Header.module.css';
-import { UserComponent } from '../UserComponent';
+import { UserComponent } from '~/Widgets/UserComponent';
 
 export const Header = () => {
 	return (

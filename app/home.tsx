@@ -1,6 +1,6 @@
 
 import type { Route } from "./+types/root";
-import { MainPage } from "./Pages/Main";
+import { LandingPage } from "./Pages/Landing";
 import { Welcome } from "./welcome/welcome";
 
 export function meta({ }: Route.MetaArgs) {
@@ -13,7 +13,7 @@ export function meta({ }: Route.MetaArgs) {
 export default function Home() {
   return (
     <>
-      <MainPage/>
+      <LandingPage/>
       {/* <Welcome /> */}
     </>
   );

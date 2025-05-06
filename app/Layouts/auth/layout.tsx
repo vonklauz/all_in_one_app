@@ -5,7 +5,9 @@ export default function authLayout() {
     return (
         <>
             <Header />
-            <Outlet />
+            <main>
+                <Outlet />
+            </main>
         </>
     )
 }  

@@ -5,7 +5,9 @@ export default function baseLayout() {
     return (
         <>
             <Header />
-            <Outlet />
+            <main>
+                <Outlet />
+            </main>
         </>
     )
 }  
