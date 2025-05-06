@@ -3,6 +3,10 @@
     background-color: var(--white);
 }
 
+.header-skeleton {
+    height: 113px;
+}
+
 .header-container {
     display: flex;
     align-items: center;
@@ -97,5 +101,11 @@
 
     .menu-list {
         gap: 2rem;
+    }
+}
+
+@media (max-width: 61.9988em) {
+    .header-skeleton {
+        height: 89px;
     }
 }

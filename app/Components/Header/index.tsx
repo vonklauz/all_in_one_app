@@ -1,30 +1,32 @@
-import { SearchBar } from './SearchBar';
-import styles from './Header.module.css';
-import { UserComponent } from '~/Widgets/UserComponent';
+import { useScreenSize } from "~/hooks/useScreenSize";
+import { DesktopHeader } from "./DesktopHeader";
+import { DeviceHeader } from "./DeviceHeader";
+import { HeaderSkeleton } from "./HeaderSkeleton";
+import { useEffect, useState } from "react";
 
 export const Header = () => {
-	return (
-		<header className={styles.header}>
-			<div className={styles.headerContainer}>
-				<button type="button" className={`${styles.menuIcon} ${styles.iconMenu}`}><span></span></button>
-				<a href="/" className={styles.headerLogo}><img src="/logo.svg" alt="Logo" /></a>
-				<div className={styles.menuBlock}>
-					<div className={styles.headerMenu}>
-						<nav className={styles.menuBody}>
-							<ul className={styles.menuList}>
-								<li className={styles.menuItem}><a href="#" className={styles.menuLink}>Главная</a></li>
-								<li className={styles.menuItem}><a href="#" className={styles.menuLink}>Анкеты</a></li>
-								<li className={styles.menuItem}><a href="#" className={styles.menuLink}>Документы</a></li>
-								<li className={styles.menuItem}><a href="#" className={styles.menuLink}>Календарь</a></li>
-								<li className={styles.menuItem}><a href="#" className={styles.menuLink}>Новости</a></li>
-								<li className={styles.menuItem}><a href="#" className={styles.menuLink}>Задать вопрос</a></li>
-							</ul>
-						</nav>
-					</div>
-					<SearchBar />
-					<UserComponent />
-				</div>
-			</div>
-		</header>
-	)
+	const [isDesktop, setDesktop] = useState(false);
+	const [isDevice, setDevice] = useState(false);
+	const { width, height } = useScreenSize();
+
+	useEffect(() => {
+		if (width > 991) {
+			setDesktop(true);
+		}
+
+		if (width < 992) {
+			setDevice(true);
+		}
+	}, [width])
+
+
+	if (isDesktop) {
+		return <DesktopHeader />;
+	}
+
+	if (isDevice) {
+		return <DeviceHeader />;
+	}
+
+	return <HeaderSkeleton />;
 }
