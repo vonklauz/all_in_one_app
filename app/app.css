@@ -235,6 +235,10 @@ img {
   line-height: 1.2;
 }
 
+.text_small {
+  font-size: .875rem;
+}
+
 @media (any-hover:hover) {
   .button:hover {
     background-color: var(--black-hover)

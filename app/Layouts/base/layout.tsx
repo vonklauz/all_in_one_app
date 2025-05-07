@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import { Footer } from "~/Components/Footer";
 import { Header } from "~/Components/Header";
 
 export default function baseLayout() {
@@ -8,6 +9,7 @@ export default function baseLayout() {
             <main>
                 <Outlet />
             </main>
+            <Footer />
         </>
     )
 }  
