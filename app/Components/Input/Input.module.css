@@ -1,3 +1,10 @@
+.form-label {
+    font-weight: 700;
+    display: block;
+    font-size: 1rem;
+    color: var(--text-gray);
+}
+
 .input-wrapper {
     padding: .375rem;
     padding-left: 0;
@@ -21,4 +28,55 @@
 
 .input-wrapper .input {
     height: 2.1875rem;
+}
+
+.form-row {}
+
+.input-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 2.5rem;
+    height: 2.25rem;
+}
+
+.light-icon-button {
+    color: var(--line-gray);
+    font-size: 1.125rem;
+}
+
+.icon_eye:before {
+    content: "\e907";
+}
+
+.icon_crossed-eye:before {
+    content: "\e904";
+}
+
+@media (min-width: 78.5em) {
+    .form-label {
+        margin-bottom: .5rem;
+    }
+}
+
+@media (min-width:47.99875em) {}
+
+@media (min-width:20em) and (max-width:78.5em) {
+    @supports (margin-bottom:clamp(0.3125rem, 0.2483974359rem + 0.3205128205vw, 0.5rem)) {
+        .form-label {
+            margin-bottom: clamp(.3125rem, .2483974359rem + .3205128205vw, .5rem)
+        }
+    }
+
+    @supports not (margin-bottom:clamp(0.3125rem, 0.2483974359rem + 0.3205128205vw, 0.5rem)) {
+        .form-label {
+            margin-bottom: calc(.3125rem + .1875 * (100vw - 20rem)/ 58.5)
+        }
+    }
+}
+
+@media (max-width:20em) {
+    .form-label {
+        margin-bottom: .3125rem
+    }
 }

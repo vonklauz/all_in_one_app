@@ -275,6 +275,17 @@ img {
   }
 }
 
+@media (min-width: 78.5em) {
+  .title_h2 {
+    font-size: 2rem;
+  }
+
+  .section-padding {
+    padding-top: 6.25rem;
+    padding-bottom: 6.25rem;
+  }
+}
+
 @media (max-width:29.99875em) {
   .text_descr {
     font-weight: 500

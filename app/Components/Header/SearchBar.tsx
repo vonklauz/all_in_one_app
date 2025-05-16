@@ -30,7 +30,7 @@ export const SearchBar = () => {
             </div>
             <div className={`${styles.headerSearchWrapper} ${isRenderSearch ? styles.active : ''}`}>
                 <form action={submitSearch}>
-                    <Input name="searchQuery">
+                    <Input name="searchQuery" label=''>
                         <button className={`${styles.searchBtn} link-action ${styles.iconSearch}`} type="submit" />
                     </Input>
                 </form>

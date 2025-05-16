@@ -1,7 +1,8 @@
 import type { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
 import styles from './Input.module.css';
 
-interface IIputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface IIputProps extends InputHTMLAttributes<HTMLInputElement> {
+    label: string;
     type?: 'text' | 'email' | 'password' | 'number' | 'search';
     name?: string;
     id?: string;
@@ -12,6 +13,7 @@ interface IIputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Input = ({
+    label,
     type = 'text',
     name,
     id,
@@ -22,18 +24,24 @@ export const Input = ({
     ...props
 }: IIputProps) => {
     return (
-        <div className={styles.inputWrapper}>
-            <input
-                type={type}
-                name={name}
-                id={id}
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder}
-                className={styles.input}
-                {...props}
-            />
-            {children}
+        <div className={styles.formRow}>
+            <label
+                htmlFor={id ? id : name ? name : ''}
+                className={styles.formLabel}
+            >{label}</label>
+            <div className={styles.inputWrapper}>
+                <input
+                    type={type}
+                    name={name}
+                    id={id}
+                    value={value}
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    className={styles.input}
+                    {...props}
+                />
+                {children}
+            </div>
         </div>
     )
 };

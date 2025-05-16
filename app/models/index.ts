@@ -3,3 +3,5 @@ export type Link = {
     path: string,
     isProtected?: boolean
 }
+
+export type FormAction = (formData: FormData) => void;
