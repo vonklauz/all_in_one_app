@@ -1,26 +1,26 @@
-import { title } from "process"
 import { FormCustom } from "~/Components/FormCustom"
 import { Input } from "~/Components/Input"
 import { InputPassword } from "~/Components/Input/InputPassword"
+import { useLoginMutation, useRegisterMutation } from "~/Service/baseApi"
 
 const CONFIG = {
     login: {
         title: "Вход",
         fields: ['email', 'password'],
         bottomLinks: [
-            { href: "/register", text: "Создать аккаунт" },
+            { href: "/register", text: "Не зарегистрированы? Создать аккаунт" },
             { href: "/restore", text: "Забыли пароль?" }
         ],
-        submitRequest: () => { },
+        submitRequest: useLoginMutation,
     },
     registration: {
         title: "Регистрация",
-        fields: ['last_name', 'first_name', 'second_name', 'phone', 'email', 'password'],
+        fields: ['lastName', 'firstName', 'secondName', 'phone', 'email', 'password'],
         bottomLinks: [{
             href: "/login",
             text: "Уже есть аккаунт? Войти"
         }],
-        submitRequest: () => { },
+        submitRequest: useRegisterMutation,
     }
 }
 
@@ -29,6 +29,7 @@ interface IAuthFormProps {
 }
 
 export const AuthForm = ({ mode }: IAuthFormProps) => {
+    const [request, resultRequest] = CONFIG[mode].submitRequest();
 
     function search(formData: FormData) {
         const query = formData.get("password");
@@ -41,9 +42,9 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
     const renderRegistrationFields = () => {
         return (
             <>
-                <Input label="Фамилия*" name="last_name" />
-                <Input label="Имя*" name="first_name" />
-                <Input label="Отчество*" name="second_name" />
+                <Input label="Фамилия*" name="lastName" />
+                <Input label="Имя*" name="firstName" />
+                <Input label="Отчество*" name="secondName" />
                 <Input label="Телефон*" name="phone" />
             </>
         )

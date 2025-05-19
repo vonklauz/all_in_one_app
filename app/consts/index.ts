@@ -1,5 +1,6 @@
-import path from "path";
-import type { Link } from "~/models";
+import type { Link } from "~/Models";
+
+export const BASE_URL = 'http://82.202.130.103:8005';
 
 export const MENU_LINKS: Link[] = [
     {

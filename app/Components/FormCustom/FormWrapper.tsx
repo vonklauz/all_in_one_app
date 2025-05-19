@@ -1,4 +1,4 @@
-import type { FormAction } from '~/models';
+import type { FormAction } from '~/Models';
 import styles from './Form.module.css';
 
 interface FormWrapperProps {

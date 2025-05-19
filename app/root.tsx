@@ -9,6 +9,9 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import type { error } from "console";
+import { Provider } from "react-redux";
+import { store } from "./Store";
 
 // export const links: Route.LinksFunction = () => [
 //   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -25,19 +28,21 @@ import "./app.css";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body className="antialiased">
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
+    <Provider store={store}>
+      <html lang="ru">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <Meta />
+          <Links />
+        </head>
+        <body className="antialiased">
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </body>
+      </html>
+    </Provider>
   );
 }
 

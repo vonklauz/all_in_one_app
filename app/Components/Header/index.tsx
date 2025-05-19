@@ -1,6 +1,6 @@
 import { HeaderComponent } from "./HeaderComponent";
 import { useMemo } from "react";
-import { MENU_LINKS } from "~/consts";
+import { MENU_LINKS } from "~/Consts";
 
 export const Header = () => {
 

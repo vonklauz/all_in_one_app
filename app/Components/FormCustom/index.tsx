@@ -1,4 +1,4 @@
-import type { FormAction } from '~/models'
+import type { FormAction } from '~/Models'
 import { FormItem, type IFormItemProps } from './FormItem'
 import { FormWrapper } from './FormWrapper'
 

@@ -1,8 +1,8 @@
 import { SearchBar } from './SearchBar';
 import styles from './Header.module.css';
 import { UserComponent } from '~/Widgets/UserComponent';
-import type { Link } from '~/models';
-import { useScreenSize } from '~/hooks/useScreenSize';
+import type { Link } from '~/Models';
+import { useScreenSize } from '~/Hooks/useScreenSize';
 import { useEffect, useState } from 'react';
 
 interface IHeaderProps {

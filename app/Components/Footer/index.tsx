@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { MENU_LINKS } from '~/consts';
+import { MENU_LINKS } from '~/Consts';
 import styles from './Footer.module.css'
 
 export const Footer = () => {
