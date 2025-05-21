@@ -1,7 +1,11 @@
+import { useEffect } from "react"
+import { useNavigate } from "react-router"
 import { FormCustom } from "~/Components/FormCustom"
 import { Input } from "~/Components/Input"
 import { InputPassword } from "~/Components/Input/InputPassword"
-import { useLoginMutation, useRegisterMutation } from "~/Service/baseApi"
+import type { LoginResponse, RegisterData } from "~/Models"
+import { useLoginMutation, useRegisterMutation } from "~/Service/authApi"
+import { handleLoginSuccess } from "~/Utils"
 
 const CONFIG = {
     login: {
@@ -12,6 +16,10 @@ const CONFIG = {
             { href: "/restore", text: "Забыли пароль?" }
         ],
         submitRequest: useLoginMutation,
+        successAction: (responseData: LoginResponse) => {
+            handleLoginSuccess(responseData);
+        },
+        redirectPath: "/"
     },
     registration: {
         title: "Регистрация",
@@ -21,6 +29,8 @@ const CONFIG = {
             text: "Уже есть аккаунт? Войти"
         }],
         submitRequest: useRegisterMutation,
+        successAction: null,
+        redirectPath: "/"
     }
 }
 
@@ -29,15 +39,29 @@ interface IAuthFormProps {
 }
 
 export const AuthForm = ({ mode }: IAuthFormProps) => {
+    const navigate = useNavigate();
     const [request, resultRequest] = CONFIG[mode].submitRequest();
 
     function search(formData: FormData) {
         const query = formData.get("password");
+        type GenericObject<T> = {
+            [key: string]: T;
+        };
+        const requestData = {} as RegisterData;
         CONFIG[mode].fields.forEach((fieldName) => {
-            console.log(formData.get(fieldName))
+            requestData[fieldName] = formData.get(fieldName);
         });
-        console.log(formData)
+        request(requestData)
+
     }
+
+    useEffect(() => {
+        console.log(resultRequest)
+        if (resultRequest?.data?.success) {
+            if (CONFIG[mode].successAction) CONFIG[mode].successAction(resultRequest.data.data);
+            navigate(CONFIG[mode].redirectPath);
+        }
+    }, [resultRequest])
 
     const renderRegistrationFields = () => {
         return (
