@@ -8,12 +8,12 @@ export async function clientLoader() {
     return data;
 }
 
-export default function authLayout({ loaderData }: { loaderData: string }) {
+export default function protectedLayout({ loaderData }: { loaderData: string }) {
     const nagivate = useNavigate();
 
     useEffect(() => {
-        if (loaderData) {
-            nagivate('/');
+        if (!loaderData) {
+            nagivate('/login');
         }
     }, [loaderData]);
 
@@ -21,9 +21,7 @@ export default function authLayout({ loaderData }: { loaderData: string }) {
         <>
             <Header />
             <main>
-                <section className="section-padding">
-                    <Outlet />
-                </section>
+                <Outlet />
             </main>
             <Footer />
         </>

@@ -1,54 +1,63 @@
 import { createApi, fetchBaseQuery, type BaseQueryFn, type FetchArgs, type FetchBaseQueryError, type RootState } from "@reduxjs/toolkit/query/react";
+import { Mutex } from "async-mutex";
 import { BASE_URL } from "~/Consts";
 import type { RawUser, User } from "~/Models";
 import { handleLoginSuccess, handleLogoutSuccess } from "~/Utils";
 
+const mutex = new Mutex();
+
 const baseQuery = fetchBaseQuery({
     baseUrl: `${BASE_URL}api/`,
-    //Пока отключил до момента переноса рефреш токена в куки
-    // prepareHeaders: (headers) => {
-    //     const token = localStorage.getItem('accessToken');
-    //     if (token) {
-    //         headers.set('Authorization', `Bearer ${token}`);
-    //     }
-    //     return headers;
-    // },
+    prepareHeaders: (headers) => {
+        const token = typeof window !== 'undefined'
+            ? localStorage.getItem('accessToken')
+            : null;
+
+        if (token) {
+            headers.set('Authorization', `Bearer ${token}`);
+        }
+    },
 });
 
 const baseQueryWithReauth: BaseQueryFn<
-    string | FetchArgs,
+    FetchArgs,
     unknown,
     FetchBaseQueryError
 > = async (args, api, extraOptions) => {
+    await mutex.waitForUnlock();
     let result = await baseQuery(args, api, extraOptions);
 
     if (result?.error?.status === 401) {
-        // Пытаемся обновить токен
-        const refreshResult = await baseQuery(
-            {
-                url: 'auth/tokens/access/new',
-                method: 'POST',
-                headers: { Authorization: `Bearer ${localStorage.getItem('refreshToken')}` }
-            },
-            api,
-            extraOptions
-        );
+        if (!mutex.isLocked()) {
+            const release = await mutex.acquire()
+            try {
+                // Пытаемся обновить токен
+                const refreshResult = await baseQuery(
+                    {
+                        url: 'auth/tokens/access/new',
+                        method: 'POST',
+                    },
+                    api,
+                    extraOptions
+                );
 
-        if (refreshResult.data) {
-            //@ts-expect-error
-            console.log('refreshResult', refreshResult.data.data)
-            // Сохраняем новый токен в хранилище
-            // api.dispatch(setToken(refreshResult.data.accessToken));
-            // Повторяем исходный запрос
-            //@ts-expect-error
-            handleLoginSuccess(refreshResult.data.data);
-            result = await baseQuery(args, api, extraOptions);
+                if (refreshResult.data) {
+                    //@ts-expect-error
+                    handleLoginSuccess(refreshResult.data.data);
+                    result = await baseQuery(args, api, extraOptions)
+                } else {
+                    // Если refreshToken протух, разлогиниваем
+                    handleLogoutSuccess();
+                }
+            } finally {
+                release();
+            }
+
         } else {
-            // Если refreshToken невалиден, разлогиниваем
-            handleLogoutSuccess();
+            await mutex.waitForUnlock();
+            result = await baseQuery(args, api, extraOptions);
         }
     }
-
     return result;
 };
 
@@ -56,11 +65,10 @@ export const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQueryWithReauth,
     endpoints: (builder) => ({
-        getUser: builder.query<User, any>({
+        getUser: builder.mutation<User, any>({
             query: () => ({
                 url: 'users',
                 method: 'GET',
-                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
             }),
             transformResponse: (response: {
                 data: RawUser
@@ -76,4 +84,4 @@ export const baseApi = createApi({
     })
 })
 
-export const { useGetUserQuery } = baseApi;
+export const { useGetUserMutation } = baseApi;

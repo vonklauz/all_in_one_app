@@ -20,7 +20,6 @@ export interface RegisterData extends Login {
 
 export interface LoginResponse {
     access_token: string;
-    refresh_token: string;
 }
 
 export interface RawUser {

@@ -1,10 +1,12 @@
 import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router"
 import { FormCustom } from "~/Components/FormCustom"
 import { Input } from "~/Components/Input"
 import { InputPassword } from "~/Components/Input/InputPassword"
 import type { LoginResponse, RegisterData } from "~/Models"
 import { useLoginMutation, useRegisterMutation } from "~/Service/authApi"
+import { setTokens } from "~/Store/Token/tokenSlice"
 import { handleLoginSuccess } from "~/Utils"
 
 const CONFIG = {
@@ -40,6 +42,7 @@ interface IAuthFormProps {
 
 export const AuthForm = ({ mode }: IAuthFormProps) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [request, resultRequest] = CONFIG[mode].submitRequest();
 
     function search(formData: FormData) {
@@ -49,6 +52,7 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
         };
         const requestData = {} as RegisterData;
         CONFIG[mode].fields.forEach((fieldName) => {
+            //@ts-expect-error
             requestData[fieldName] = formData.get(fieldName);
         });
         request(requestData)
@@ -56,9 +60,11 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
     }
 
     useEffect(() => {
-        console.log(resultRequest)
         if (resultRequest?.data?.success) {
-            if (CONFIG[mode].successAction) CONFIG[mode].successAction(resultRequest.data.data);
+            if (CONFIG[mode].successAction) {
+                dispatch(setTokens(resultRequest.data.data));
+                CONFIG[mode].successAction(resultRequest.data.data);
+            }
             navigate(CONFIG[mode].redirectPath);
         }
     }, [resultRequest])

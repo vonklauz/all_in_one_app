@@ -23,14 +23,14 @@ export const MENU_LINKS: Link[] = [
         path: '/calendar',
         isProtected: true
     },
-    {
-        label: 'Новости',
-        path: '/news',
-        isProtected: false
-    },
-    {
-        label: 'Задать вопрос',
-        path: '/ask',
-        isProtected: true
-    },
+    // {
+    //     label: 'Новости',
+    //     path: '/news',
+    //     isProtected: false
+    // },
+    // {
+    //     label: 'Задать вопрос',
+    //     path: '/ask',
+    //     isProtected: true
+    // },
 ]

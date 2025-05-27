@@ -1,4 +1,4 @@
-import type { LoginResponse } from "~/Models";
+import type { LoginResponse, User } from "~/Models";
 
 export const parseJwt = (token: string) => {
     var base64Url = token.split('.')[1];
@@ -11,17 +11,25 @@ export const parseJwt = (token: string) => {
 }
 
 export const handleLoginSuccess = (data: LoginResponse) => {
-    const refreshToken = data.refresh_token;
     const accessToken = data.access_token;
     const user = parseJwt(accessToken);
 
-    localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('user', JSON.stringify(user));
 }
 
 export const handleLogoutSuccess = () => {
-    localStorage.removeItem('refreshToken');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
 }
+
+export const getDefaultUser = (): User => (
+    {
+        firstName: '',
+        secondName: '',
+        lastName: '',
+        userId: '',
+        email: '',
+        phone: ''
+    }
+)

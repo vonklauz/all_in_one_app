@@ -276,6 +276,10 @@ img {
 }
 
 @media (min-width: 78.5em) {
+  .title_h1 {
+    font-size: 3.125rem;
+  }
+
   .title_h2 {
     font-size: 2rem;
   }
