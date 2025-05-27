@@ -9,11 +9,11 @@ export async function clientLoader() {
 }
 
 export default function authLayout({ loaderData }: { loaderData: string }) {
-    const nagivate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (loaderData) {
-            nagivate('/');
+            navigate('/');
         }
     }, [loaderData]);
 

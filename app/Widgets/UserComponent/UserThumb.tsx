@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router';
 import styles from './User.module.css'
 
 interface IUserThumbProps {
@@ -8,8 +9,9 @@ interface IUserThumbProps {
 }
 
 export const UserThumb = ({ firstName, secondName, lastName, onLogout }: IUserThumbProps) => {
+    const navigate = useNavigate();
     return (
-        <div className={styles.userHeader}>
+        <div className={styles.userHeader} onClick={() => navigate('/profile')}>
             <div className={styles.icon}>{firstName.slice(0, 1)} {lastName.slice(0, 1)}</div>
             <div className={`${styles.arrow} ${styles.iconDropdown} icon_`}></div>
             <div className={styles.submenuUser}>
