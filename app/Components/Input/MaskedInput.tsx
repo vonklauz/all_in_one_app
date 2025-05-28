@@ -1,18 +1,14 @@
 import type { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
+import { InputMask } from '@react-input/mask';
 import styles from './Input.module.css';
+import type { IInputProps } from '.';
 
-export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
-    label: string;
-    type?: 'text' | 'email' | 'password' | 'number' | 'search';
-    name?: string;
-    id?: string;
-    value?: string;
-    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-    placeholder?: string;
-    children?: ReactNode;
+export interface IMaskedInputProps extends IInputProps {
+    mask: string;
+    replacement: RegExp;
 }
 
-export const Input = ({
+export const MaskedInput = ({
     label,
     type = 'text',
     name,
@@ -21,8 +17,10 @@ export const Input = ({
     onChange,
     placeholder,
     children,
+    mask,
+    replacement,
     ...props
-}: IInputProps) => {
+}: IMaskedInputProps) => {
     return (
         <div className={styles.formRow}>
             <label
@@ -30,7 +28,9 @@ export const Input = ({
                 className={styles.formLabel}
             >{label}</label>
             <div className={`${styles.inputWrapper} ${props.disabled ? styles.readOnly : ''}`}>
-                <input
+                <InputMask
+                    mask={mask}
+                    replacement={{_: replacement}}
                     type={type}
                     name={name}
                     id={id}

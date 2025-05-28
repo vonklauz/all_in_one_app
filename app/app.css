@@ -288,6 +288,10 @@ img {
     font-size: 1.25rem;
   }
 
+  .text_descr {
+    font-size: 1.1875rem;
+  }
+
   .section-padding {
     padding-top: 6.25rem;
     padding-bottom: 6.25rem;

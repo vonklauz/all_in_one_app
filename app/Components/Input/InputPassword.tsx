@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Input, type IIputProps } from ".";
+import { Input, type IInputProps } from ".";
 import styles from './Input.module.css';
 
-export const InputPassword = (props: IIputProps) => {
+export const InputPassword = (props: IInputProps) => {
     const [isPasswordVisible, setPasswordVisible] = useState(false);
 
     const renderEyeIcon = () => (

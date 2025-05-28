@@ -5,6 +5,7 @@ import type { User } from "~/Models";
 import type { RootState } from "~/Store";
 import { getDefaultUser } from "~/Utils";
 import styles from './PersonalDataForm.module.css'
+import { PhoneInput } from "~/Components/Input/PhoneInput";
 
 export const PersonalDataForm = () => {
     const [localUser, setLocalUser] = useState<User>(getDefaultUser());
@@ -30,10 +31,17 @@ export const PersonalDataForm = () => {
 
         return (
             <form className={styles.form}>
-                {inputConfig.map((item) => (
-                    <Input key={item.label} {...item} value={localUser[item.name]} disabled/>
-                ))}
-                <Input label="Персональный ID" name='userId' value={localUser.userId} disabled/>
+                {inputConfig.map((item) => {
+                    if (item.name === 'phone') {
+                        return (
+                            <PhoneInput key={item.label} {...item} value={localUser[item.name]} disabled />
+                        )
+                    }
+                    return (
+                        <Input key={item.label} {...item} value={localUser[item.name]} disabled />
+                    )
+                })}
+                <Input label="Персональный ID" name='userId' value={localUser.userId} disabled />
             </form>
         )
     }
