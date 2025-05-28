@@ -1,6 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { User } from "~/Models";
-import { getDefaultUser } from "~/Utils";
+
+export const getDefaultUser = (): User => (
+    {
+        firstName: '',
+        secondName: '',
+        lastName: '',
+        userId: '',
+        email: '',
+        phone: ''
+    }
+)
 
 const initialState = {
     user: getDefaultUser()

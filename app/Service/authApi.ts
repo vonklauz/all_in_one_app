@@ -31,8 +31,7 @@ export const authApi = createApi({
             })
         }),
         logout: builder.mutation<any, any>({
-            query: ({ refreshToken }) => ({
-                headers: { Authorization: `Bearer ${refreshToken}` },
+            query: () => ({
                 url: 'logout',
                 method: 'POST',
             })

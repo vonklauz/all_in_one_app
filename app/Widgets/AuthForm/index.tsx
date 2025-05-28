@@ -1,13 +1,15 @@
-import { useEffect } from "react"
+import { useActionState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router"
 import { FormCustom } from "~/Components/FormCustom"
 import { Input } from "~/Components/Input"
 import { InputPassword } from "~/Components/Input/InputPassword"
-import type { LoginResponse, RegisterData } from "~/Models"
+import { PhoneInput } from "~/Components/Input/PhoneInput"
+import type { LoginResponse, RegisterData, User } from "~/Models"
 import { useLoginMutation, useRegisterMutation } from "~/Service/authApi"
 import { setTokens } from "~/Store/Token/tokenSlice"
-import { handleLoginSuccess } from "~/Utils"
+import { getDefaultUser } from "~/Store/User/userSlice"
+import { handleLoginSuccess, clearPhoneNumberString } from "~/Utils"
 
 const CONFIG = {
     login: {
@@ -21,7 +23,7 @@ const CONFIG = {
         successAction: (responseData: LoginResponse) => {
             handleLoginSuccess(responseData);
         },
-        redirectPath: "/"
+        redirectPath: "/profile"
     },
     registration: {
         title: "Регистрация",
@@ -35,32 +37,38 @@ const CONFIG = {
         redirectPath: "/"
     }
 }
-
 interface IAuthFormProps {
     mode: "login" | "registration"
 }
 
 export const AuthForm = ({ mode }: IAuthFormProps) => {
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [request, resultRequest] = CONFIG[mode].submitRequest();
 
-    function search(formData: FormData) {
-        const query = formData.get("password");
-        type GenericObject<T> = {
-            [key: string]: T;
-        };
+    async function handleFormAction(prevState: unknown, formData: FormData) {
         const requestData = {} as RegisterData;
         CONFIG[mode].fields.forEach((fieldName) => {
-            //@ts-expect-error
-            requestData[fieldName] = formData.get(fieldName);
+            if (fieldName === 'phone') {
+                //@ts-expect-error
+                requestData[fieldName] = clearPhoneNumberString(formData.get(fieldName));
+            } else {
+                //@ts-expect-error
+                requestData[fieldName] = formData.get(fieldName);
+            }
+
         });
         request(requestData)
 
+        return requestData
     }
 
+    const [actionState, action, isPending] = useActionState(handleFormAction, { ...getDefaultUser(), password: '' });
+
     useEffect(() => {
-        if (resultRequest?.data?.success) {
+        console.log(resultRequest.data)
+        if (resultRequest.data?.success) {
             if (CONFIG[mode].successAction) {
                 dispatch(setTokens(resultRequest.data.data));
                 CONFIG[mode].successAction(resultRequest.data.data);
@@ -72,10 +80,10 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
     const renderRegistrationFields = () => {
         return (
             <>
-                <Input label="Фамилия*" name="lastName" />
-                <Input label="Имя*" name="firstName" />
-                <Input label="Отчество*" name="secondName" />
-                <Input label="Телефон*" name="phone" />
+                <Input label="Фамилия*" name="lastName" defaultValue={actionState.lastName} disabled={isPending}/>
+                <Input label="Имя*" name="firstName" defaultValue={actionState.firstName} disabled={isPending}/>
+                <Input label="Отчество*" name="secondName" defaultValue={actionState.secondName} disabled={isPending}/>
+                <PhoneInput label="Телефон*" name="phone" defaultValue={actionState.phone} disabled={isPending}/>
             </>
         )
     }
@@ -87,7 +95,7 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
         return (
             <div>
                 {CONFIG[mode].bottomLinks.map((item) => (
-                    <div className="flex" style={{ marginTop: '16px' }}>
+                    <div className="flex" style={{ marginTop: '16px' }} key={item.href}>
                         <a href={item.href} style={{ textDecoration: 'underline' }}>{item.text}</a>
                     </div>
                 ))}
@@ -97,14 +105,14 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
 
     return (
         <FormCustom
-            action={search}
+            action={action}
             title={CONFIG[mode].title}
         >
             <>
                 {mode === "registration" && renderRegistrationFields()}
-                <Input label="Эл. почта*" type="email" name="email" />
-                <InputPassword label="Пароль*" type="password" name="password" />
-                <button type="submit">{mode === "registration" ? 'Зарегистрироваться' : 'Войти'}</button>
+                <Input label="Эл. почта*" type="email" name="email" defaultValue={actionState.email} disabled={isPending}/>
+                <InputPassword label="Пароль*" type="password" name="password" defaultValue={actionState.password} disabled={isPending}/>
+                <button type="submit" disabled={isPending}>{mode === "registration" ? 'Зарегистрироваться' : 'Войти'}</button>
                 {renderBottomLinkSection()}
             </>
         </FormCustom>

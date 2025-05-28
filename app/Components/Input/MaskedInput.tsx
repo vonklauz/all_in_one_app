@@ -1,4 +1,3 @@
-import type { ChangeEvent, InputHTMLAttributes, ReactNode } from 'react';
 import { InputMask } from '@react-input/mask';
 import styles from './Input.module.css';
 import type { IInputProps } from '.';
@@ -6,6 +5,7 @@ import type { IInputProps } from '.';
 export interface IMaskedInputProps extends IInputProps {
     mask: string;
     replacement: RegExp;
+    showMask?: boolean;
 }
 
 export const MaskedInput = ({

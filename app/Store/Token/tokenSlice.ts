@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getDefaultUser } from "~/Utils";
 
 const initialState = {
     accessToken: '',

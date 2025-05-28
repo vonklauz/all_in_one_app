@@ -1,4 +1,6 @@
 import type { LoginResponse, User } from "~/Models";
+import { dispatch } from "~/Store";
+import { getDefaultUser, setUser } from "~/Store/User/userSlice";
 
 export const parseJwt = (token: string) => {
     var base64Url = token.split('.')[1];
@@ -15,21 +17,14 @@ export const handleLoginSuccess = (data: LoginResponse) => {
     const user = parseJwt(accessToken);
 
     localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('rawUser', JSON.stringify(user));
 }
 
 export const handleLogoutSuccess = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('rawUser');
     localStorage.removeItem('user');
+    dispatch(setUser(getDefaultUser()));
 }
 
-export const getDefaultUser = (): User => (
-    {
-        firstName: '',
-        secondName: '',
-        lastName: '',
-        userId: '',
-        email: '',
-        phone: ''
-    }
-)
+export const clearPhoneNumberString = (phone: string): string => phone.split('').filter((el) => !['(',')', '-',' '].includes(el)).join('');

@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { Input } from "~/Components/Input";
 import type { User } from "~/Models";
 import type { RootState } from "~/Store";
-import { getDefaultUser } from "~/Utils";
 import styles from './PersonalDataForm.module.css'
 import { PhoneInput } from "~/Components/Input/PhoneInput";
+import { getDefaultUser } from "~/Store/User/userSlice";
 
 export const PersonalDataForm = () => {
     const [localUser, setLocalUser] = useState<User>(getDefaultUser());

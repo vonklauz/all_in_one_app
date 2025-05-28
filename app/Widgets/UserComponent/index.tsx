@@ -8,12 +8,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '~/Store';
 import { setUser } from '~/Store/User/userSlice';
 import type { Route } from '../../+types/root';
+import { useLogoutMutation } from '~/Service/authApi';
+import { handleLogoutSuccess } from '~/Utils';
 
 export const UserComponent = () => {
     const [isRendering, setIsRendering] = useState(true);
     const user = useSelector((state: RootState) => state.userSlice.user);
     const dispatch = useDispatch();
     const [getUser, resultGetUser] = useGetUserMutation();
+    const [logoff, resultLogoff] = useLogoutMutation();
     const { data, isLoading, error } = resultGetUser;
 
     useEffect(() => {
@@ -21,11 +24,25 @@ export const UserComponent = () => {
     }, []);
 
     useEffect(() => {
-        if (!data?.userId) {
-            getUser('')
-        } else {
-            if (!user.userId) {
-                dispatch(setUser(data));
+        if (resultLogoff?.data?.success) {
+            handleLogoutSuccess();
+        }
+    }, [resultLogoff])
+
+    useEffect(() => {
+        if (localStorage.getItem('accessToken')) {
+            if (!data?.userId) {
+                const localUser: string | null = localStorage.getItem('user');
+                if (!localUser) {
+                    getUser('')
+                } else {
+                    dispatch(setUser(JSON.parse(localUser)));
+                }
+            } else {
+                if (!user.userId) {
+                    dispatch(setUser(data));
+                    localStorage.setItem('user', JSON.stringify(data))
+                }
             }
         }
     }, [data])
@@ -35,7 +52,7 @@ export const UserComponent = () => {
             return (
                 <UserThumb
                     {...user}
-                    onLogout={() => { }}
+                    onLogout={() => logoff('')}
                 />
             )
         }

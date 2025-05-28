@@ -21,6 +21,7 @@ export const Input = ({
     onChange,
     placeholder,
     children,
+    defaultValue,
     ...props
 }: IInputProps) => {
     return (
@@ -31,6 +32,7 @@ export const Input = ({
             >{label}</label>
             <div className={`${styles.inputWrapper} ${props.disabled ? styles.readOnly : ''}`}>
                 <input
+                    defaultValue={defaultValue || ''}
                     type={type}
                     name={name}
                     id={id}
