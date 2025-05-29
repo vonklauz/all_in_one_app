@@ -1,4 +1,4 @@
-import { useActionState, useEffect } from "react"
+import { useActionState, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router"
 import { FormCustom } from "~/Components/FormCustom"
@@ -9,7 +9,8 @@ import type { LoginResponse, RegisterData, User } from "~/Models"
 import { useLoginMutation, useRegisterMutation } from "~/Service/authApi"
 import { setTokens } from "~/Store/Token/tokenSlice"
 import { getDefaultUser } from "~/Store/User/userSlice"
-import { handleLoginSuccess, clearPhoneNumberString } from "~/Utils"
+import { handleLoginSuccess, clearPhoneNumberString, remapServerFieldToFrontFormat } from "~/Utils"
+import { loginSchema, registerSchema } from "~/Utils/validation"
 
 const CONFIG = {
     login: {
@@ -23,7 +24,8 @@ const CONFIG = {
         successAction: (responseData: LoginResponse) => {
             handleLoginSuccess(responseData);
         },
-        redirectPath: "/profile"
+        redirectPath: "/profile",
+        validationSchema: loginSchema,
     },
     registration: {
         title: "Регистрация",
@@ -34,7 +36,8 @@ const CONFIG = {
         }],
         submitRequest: useRegisterMutation,
         successAction: null,
-        redirectPath: "/"
+        redirectPath: "/",
+        validationSchema: registerSchema,
     }
 }
 interface IAuthFormProps {
@@ -42,13 +45,32 @@ interface IAuthFormProps {
 }
 
 export const AuthForm = ({ mode }: IAuthFormProps) => {
-
+    const [errors, setErrors] = useState<Partial<RegisterData> | null>(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [request, resultRequest] = CONFIG[mode].submitRequest();
+    console.log(errors)
+
+    const validateAndSend = (requestData: RegisterData) => {
+        try {
+            CONFIG[mode].validationSchema.validateSync({ ...requestData }, { abortEarly: false })
+        } catch (err) {
+            const newErrors = {};
+            //@ts-expect-error
+            err.inner.forEach((e) => {
+                //@ts-expect-error
+                newErrors[e.path] = e.message;
+            });
+            setErrors(newErrors);
+            return;
+        }
+        setErrors(null);
+        request(requestData)
+    }
 
     async function handleFormAction(prevState: unknown, formData: FormData) {
         const requestData = {} as RegisterData;
+
         CONFIG[mode].fields.forEach((fieldName) => {
             if (fieldName === 'phone') {
                 //@ts-expect-error
@@ -59,7 +81,8 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
             }
 
         });
-        request(requestData)
+
+        validateAndSend(requestData);
 
         return requestData
     }
@@ -74,16 +97,22 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
                 CONFIG[mode].successAction(resultRequest.data.data);
             }
             navigate(CONFIG[mode].redirectPath);
+        } else if (resultRequest.data?.error) {
+            const { field, message } = resultRequest.data?.error.message
+            //remapServerFieldToFrontFormat
+            const fieldname = remapServerFieldToFrontFormat(field);
+            const backendError = { [fieldname]: message };
+            setErrors({ ...backendError });
         }
     }, [resultRequest])
 
     const renderRegistrationFields = () => {
         return (
             <>
-                <Input label="Фамилия*" name="lastName" defaultValue={actionState.lastName} disabled={isPending}/>
-                <Input label="Имя*" name="firstName" defaultValue={actionState.firstName} disabled={isPending}/>
-                <Input label="Отчество*" name="secondName" defaultValue={actionState.secondName} disabled={isPending}/>
-                <PhoneInput label="Телефон*" name="phone" defaultValue={actionState.phone} disabled={isPending}/>
+                <Input label="Фамилия*" name="lastName" defaultValue={actionState.lastName} disabled={isPending} error={errors?.lastName} />
+                <Input label="Имя*" name="firstName" defaultValue={actionState.firstName} disabled={isPending} error={errors?.firstName} />
+                <Input label="Отчество*" name="secondName" defaultValue={actionState.secondName} disabled={isPending} error={errors?.secondName} />
+                <PhoneInput label="Телефон*" name="phone" defaultValue={actionState.phone} disabled={isPending} error={errors?.phone} />
             </>
         )
     }
@@ -110,8 +139,8 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
         >
             <>
                 {mode === "registration" && renderRegistrationFields()}
-                <Input label="Эл. почта*" type="email" name="email" defaultValue={actionState.email} disabled={isPending}/>
-                <InputPassword label="Пароль*" type="password" name="password" defaultValue={actionState.password} disabled={isPending}/>
+                <Input label="Эл. почта*" type="email" name="email" defaultValue={actionState.email} disabled={isPending} error={errors?.email} />
+                <InputPassword label="Пароль*" type="password" name="password" defaultValue={actionState.password} disabled={isPending} error={errors?.password} />
                 <button type="submit" disabled={isPending}>{mode === "registration" ? 'Зарегистрироваться' : 'Войти'}</button>
                 {renderBottomLinkSection()}
             </>

@@ -58,6 +58,13 @@
     content: "\e904";
 }
 
+.error {
+    margin-top: 4px;
+    display: block;
+    color: var(--text-red);
+    font-size: .8rem;
+}
+
 @media (min-width: 78.5em) {
     .form-label {
         margin-bottom: .5rem;

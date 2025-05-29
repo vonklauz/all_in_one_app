@@ -1,4 +1,4 @@
-import type { LoginResponse, User } from "~/Models";
+import type { LoginResponse, RegisterData, User } from "~/Models";
 import { dispatch } from "~/Store";
 import { getDefaultUser, setUser } from "~/Store/User/userSlice";
 
@@ -27,4 +27,13 @@ export const handleLogoutSuccess = () => {
     dispatch(setUser(getDefaultUser()));
 }
 
-export const clearPhoneNumberString = (phone: string): string => phone.split('').filter((el) => !['(',')', '-',' '].includes(el)).join('');
+export const clearPhoneNumberString = (phone: string): string => phone.split('').filter((el) => !['(', ')', '-', ' '].includes(el)).join('');
+
+export const remapServerFieldToFrontFormat = (backendField: string): keyof RegisterData => {
+    const fieldsMap: { [key: string]: keyof RegisterData } = {
+        'first_name': 'firstName',
+        'last_name': 'lastName',
+        'second_name': 'secondName',
+    }
+    return fieldsMap[backendField] || backendField;
+}
