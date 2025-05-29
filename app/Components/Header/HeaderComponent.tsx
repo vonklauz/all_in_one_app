@@ -4,12 +4,15 @@ import { UserComponent } from '~/Widgets/UserComponent';
 import type { Link } from '~/Models';
 import { useScreenSize } from '~/Hooks/useScreenSize';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '~/Store';
 
 interface IHeaderProps {
     links: Link[]
 }
 
 export const HeaderComponent = (props: IHeaderProps) => {
+    const user = useSelector((state: RootState) => state.userSlice.user);
     const { width } = useScreenSize();
     const [isDesktop, setDesktop] = useState(false);
     const [isDevice, setDevice] = useState(false);
@@ -44,13 +47,13 @@ export const HeaderComponent = (props: IHeaderProps) => {
                                         <a href={item.path} className={styles.menuLink}>{item.label}</a>
                                     </li>
                                 ))}
-                                {isDevice && (
+                                {isDevice && user.userId && (
                                     <li className={styles.menuItem} key="searchBar"><SearchBar /></li>
                                 )}
                             </ul>
                         </nav>
                     </div>
-                    {isDesktop && <SearchBar />}
+                    {isDesktop && user.userId && <SearchBar />}
                     <UserComponent />
                 </div>
             </div>

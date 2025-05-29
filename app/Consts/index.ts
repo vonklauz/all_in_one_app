@@ -6,7 +6,7 @@ export const MENU_LINKS: Link[] = [
     {
         label: 'Главная',
         path: '/',
-        isProtected: false
+        isProtected: true
     },
     {
         label: 'Анкеты',
