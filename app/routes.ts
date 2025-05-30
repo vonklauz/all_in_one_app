@@ -11,5 +11,7 @@ export default [
     layout("./Layouts/protected/layout.tsx", [
         route("profile", "./Pages/Profile/Profile.tsx"),
     ]),
-
+    layout("./Layouts/confirm/layout.tsx", [
+        route("confirm", "./Pages/Confirm/Confirm.tsx"),
+    ]),
 ] satisfies RouteConfig;

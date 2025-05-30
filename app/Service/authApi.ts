@@ -35,9 +35,18 @@ export const authApi = createApi({
                 url: 'logout',
                 method: 'POST',
             })
+        }),
+        verifyEmail: builder.mutation<any, { token: string }>({
+            query: ({ token }) => ({
+                url: 'verify_email',
+                method: 'POST',
+                body: {
+                    token
+                }
+            })
         })
 
     })
 })
 
-export const { useRegisterMutation, useLoginMutation, useLogoutMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useLogoutMutation, useVerifyEmailMutation } = authApi;

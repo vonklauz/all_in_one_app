@@ -32,7 +32,7 @@ export const UserComponent = () => {
     useEffect(() => {
         if (localStorage.getItem('accessToken')) {
             if (!data?.userId) {
-                const localUser: string | null = localStorage.getItem('user');
+                const localUser: string | null = sessionStorage.getItem('user');
                 if (!localUser) {
                     getUser('')
                 } else {
@@ -41,7 +41,7 @@ export const UserComponent = () => {
             } else {
                 if (!user.userId) {
                     dispatch(setUser(data));
-                    localStorage.setItem('user', JSON.stringify(data))
+                    sessionStorage.setItem('user', JSON.stringify(data))
                 }
             }
         }

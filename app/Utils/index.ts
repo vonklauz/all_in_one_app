@@ -23,7 +23,7 @@ export const handleLoginSuccess = (data: LoginResponse) => {
 export const handleLogoutSuccess = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('rawUser');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
     dispatch(setUser(getDefaultUser()));
 }
 
