@@ -34,3 +34,5 @@ export const MENU_LINKS: Link[] = [
     //     isProtected: true
     // },
 ]
+
+export const REDIRECT_TIMING = 3000;

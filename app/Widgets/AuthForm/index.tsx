@@ -6,6 +6,7 @@ import { Input } from "~/Components/Input"
 import { InputPassword } from "~/Components/Input/InputPassword"
 import { PhoneInput } from "~/Components/Input/PhoneInput"
 import { RegisterSuccessModal } from "~/Components/Modal/RegisterSuccessModal"
+import { REDIRECT_TIMING } from "~/Consts"
 import type { LoginResponse, RegisterData, User } from "~/Models"
 import { useLoginMutation, useRegisterMutation } from "~/Service/authApi"
 import { setTokens } from "~/Store/Token/tokenSlice"
@@ -100,7 +101,7 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
                 navigate(CONFIG[mode].redirectPath);
             } else {
                 setIsShowModal(true)
-                setTimeout(() => navigate('/'), 3000);
+                setTimeout(() => navigate('/'), REDIRECT_TIMING);
             }
             
         } else if (resultRequest.data?.error) {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { REDIRECT_TIMING } from "~/Consts";
 import { useVerifyEmailMutation } from "~/Service/authApi"
 
 export const ConfirmForm = ({ confirmToken }: { confirmToken: string }) => {
@@ -19,7 +20,7 @@ export const ConfirmForm = ({ confirmToken }: { confirmToken: string }) => {
             setSuccess(true)
             setTimeout(() => {
                 navigate('/login')
-            }, 5000)
+            }, REDIRECT_TIMING)
         } else if (resultVerifyToken.isError) {
             setError(true)
         }
@@ -28,7 +29,7 @@ export const ConfirmForm = ({ confirmToken }: { confirmToken: string }) => {
     const getContent = () => {
 
         if (isSuccess) {
-            return 'Профиль успешно активирован! Через 5 секунд Вы будете перенаправлены на страницу входа...'
+            return 'Профиль успешно активирован! Через 3 секунды Вы будете перенаправлены на страницу входа...'
         }
 
         if (isError) {
