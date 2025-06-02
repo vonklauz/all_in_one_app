@@ -5,6 +5,7 @@ import { FormCustom } from "~/Components/FormCustom"
 import { Input } from "~/Components/Input"
 import { InputPassword } from "~/Components/Input/InputPassword"
 import { PhoneInput } from "~/Components/Input/PhoneInput"
+import { RegisterSuccessModal } from "~/Components/Modal/RegisterSuccessModal"
 import type { LoginResponse, RegisterData, User } from "~/Models"
 import { useLoginMutation, useRegisterMutation } from "~/Service/authApi"
 import { setTokens } from "~/Store/Token/tokenSlice"
@@ -46,6 +47,7 @@ interface IAuthFormProps {
 
 export const AuthForm = ({ mode }: IAuthFormProps) => {
     const [errors, setErrors] = useState<Partial<RegisterData> | null>(null);
+    const [isShowModal, setIsShowModal] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [request, resultRequest] = CONFIG[mode].submitRequest();
@@ -95,8 +97,12 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
             if (CONFIG[mode].successAction) {
                 dispatch(setTokens(resultRequest.data.data));
                 CONFIG[mode].successAction(resultRequest.data.data);
+                navigate(CONFIG[mode].redirectPath);
+            } else {
+                setIsShowModal(true)
+                setTimeout(() => navigate('/'), 3000);
             }
-            navigate(CONFIG[mode].redirectPath);
+            
         } else if (resultRequest.data?.error) {
             const { field, message } = resultRequest.data?.error.message
             //remapServerFieldToFrontFormat
@@ -143,6 +149,7 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
                 <InputPassword label="Пароль*" type="password" name="password" defaultValue={actionState.password} disabled={isPending} error={errors?.password} />
                 <button type="submit" disabled={isPending}>{mode === "registration" ? 'Зарегистрироваться' : 'Войти'}</button>
                 {renderBottomLinkSection()}
+                {isShowModal && <RegisterSuccessModal isOpen={isShowModal} />}
             </>
         </FormCustom>
     )
