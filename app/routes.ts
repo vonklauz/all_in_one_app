@@ -12,6 +12,6 @@ export default [
         route("profile", "./Pages/Profile/Profile.tsx"),
     ]),
     layout("./Layouts/confirm/layout.tsx", [
-        route("confirm", "./Pages/Confirm/Confirm.tsx"),
+        route("email/confirm", "./Pages/Confirm/Confirm.tsx"),
     ]),
 ] satisfies RouteConfig;
