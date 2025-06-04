@@ -17,16 +17,22 @@
     position: relative;
 }
 
-.input {
+.input,
+.date-input {
     width: 100%;
     display: block;
-    padding: 0 15px;
+
     caret-color: inherit;
     height: 3.0625rem;
     color: var(--text-black);
 }
 
-.input-wrapper .input {
+.input {
+    padding: 0 15px;
+}
+
+.input-wrapper .input,
+.input-wrapper .date-input {
     height: 2.1875rem;
 }
 

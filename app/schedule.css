@@ -1,0 +1,33 @@
+.qs-datepicker {
+    font-size: 1rem;
+    font-family: sans-serif;
+    color: var(--text-gray);
+    max-width: 17.9375rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 9001;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: .625rem;
+    overflow: hidden;
+    background: var(--background-light-blue);
+    padding: 1.375rem 1.25rem;
+}
+
+.qs-squares {
+    display: flex;
+    color: var(--text-gray);
+    flex-wrap: wrap;
+    padding: .3125em;
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    transition: -webkit-filter .3s;
+    transition: filter .3s;
+    transition: filter .3s, -webkit-filter .3s;
+}
+
+.qs-outside-current-month {
+    color: var(--line-gray) !important;
+}

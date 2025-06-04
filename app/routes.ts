@@ -10,6 +10,7 @@ export default [
     ]),
     layout("./Layouts/protected/layout.tsx", [
         route("profile", "./Pages/Profile/Profile.tsx"),
+        route("calendar", "./Pages/Calendar/Calendar.tsx"),
     ]),
     layout("./Layouts/confirm/layout.tsx", [
         route("email/confirm", "./Pages/Confirm/Confirm.tsx"),

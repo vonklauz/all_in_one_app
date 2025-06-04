@@ -6,6 +6,15 @@ export type Link = {
 
 export type FormAction = (formData: FormData) => void;
 
+/**
+ * Базовый тип для ответов от сервера.
+ */
+export interface IBaseSuccessResponse<T> {
+    success: boolean;
+    error?: string;
+    data: T;
+}
+
 export interface Login {
     email: string;
     password: string;
@@ -39,3 +48,19 @@ export interface User {
     phone: string;
     email: string;
 }
+
+export interface IScheduleEvent {
+    id: string;
+    title: string;
+}
+
+export interface IScheduleEventState extends IScheduleEvent {
+    sendDate?: string;
+}
+
+export interface IEvents {
+    events: IScheduleEvent[];
+}
+
+
+

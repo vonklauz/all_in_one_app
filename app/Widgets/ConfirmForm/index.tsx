@@ -8,7 +8,7 @@ export const ConfirmForm = ({ confirmToken }: { confirmToken: string }) => {
     const [isSuccess, setSuccess] = useState(false);
     const navigate = useNavigate();
     const [verifyToken, resultVerifyToken] = useVerifyEmailMutation();
-    console.log('heuy', confirmToken)
+    
     useEffect(() => {
         if (confirmToken) {
             verifyToken({ token: confirmToken });
