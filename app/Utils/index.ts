@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import type { LoginResponse, RegisterData, User } from "~/Models";
 import { dispatch } from "~/Store";
 import { getDefaultUser, setUser } from "~/Store/User/userSlice";
@@ -36,4 +37,16 @@ export const remapServerFieldToFrontFormat = (backendField: string): keyof Regis
         'second_name': 'secondName',
     }
     return fieldsMap[backendField] || backendField;
+}
+
+export const cloneDeep = (data: any) => JSON.parse(JSON.stringify(data));
+
+/**
+ * Возврашает дату в виде строки, ожидаемой сервером, если она валидна.
+ * @param date Строка вида '31.05.1970'
+ * @returns 
+ */
+export const getDateFromString = (date: string): string => {
+    const [day, month, year] = date.split('.').map(Number);
+    return format(new Date(year, month - 1, day), 'yyyy-MM-dd');
 }

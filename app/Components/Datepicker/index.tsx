@@ -27,7 +27,7 @@ export const Datepicker = ({
     dateFormat,
     ...props
 }: IDatepickerProps) => {
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState();
 
     const isWeekday = (date: Date) => {
         const day = getDay(date);
@@ -47,11 +47,15 @@ export const Datepicker = ({
                     className={inputStyles.dateInput}
                     dateFormat={dateFormat ? dateFormat : "dd.MM.yyyy"}
                     filterDate={isWeekday}
-                    selected={startDate} onChange={(date) => {
-                        if (date) {
-                            setStartDate(date)
-                        }
-                    }}
+                    selected={startDate} 
+                    // onChange={(date) => {
+                    //     if (date) {
+                    //         setStartDate(date)
+                    //     }
+                    // }}
+                    value={value ? value : undefined}
+                    //@ts-ignore
+                    onChange={(date) => onChange(id, date)}
                 />
                 {children}
             </div>

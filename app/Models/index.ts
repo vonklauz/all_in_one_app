@@ -15,6 +15,10 @@ export interface IBaseSuccessResponse<T> {
     data: T;
 }
 
+export interface ISimpleResponse {
+    success: boolean
+}
+
 export interface Login {
     email: string;
     password: string;
@@ -49,17 +53,44 @@ export interface User {
     email: string;
 }
 
+/**
+ * Интерфейс базового события календаря.
+ */
 export interface IScheduleEvent {
     id: string;
     title: string;
 }
 
+/**
+ * Интерфейс состояния формы событий календаря.
+ */
 export interface IScheduleEventState extends IScheduleEvent {
     sendDate?: string;
+    userEventId?: string;
 }
 
+/**
+ * Интерфейс получаемых базовых событий с бэка.
+ */
 export interface IEvents {
     events: IScheduleEvent[];
+}
+
+/**
+ * Интерфейс существующего события конкретного пользователя.
+ */
+export interface IUserScheduleEvent {
+    id: string,
+    sendDate: string,
+    send_date?: string,
+    event: IScheduleEvent
+}
+
+/**
+ * Интерфейс получаемых сущесвтующих пользовательских событий с бэка.
+ */
+export interface IUserEvents {
+    eventTasks: IUserScheduleEvent[];
 }
 
 

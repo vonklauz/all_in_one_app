@@ -46,6 +46,8 @@
   --green: #62d28f;
   --green-hover: #88DDAA;
   --green-active: #39C672;
+  --red: #d12f2f;
+  --red-hover: #c65252;
   --gray: #F0F1FB;
   --gray-hover: #F0F1FB;
   --gray-active: #C7CAF0;
@@ -152,12 +154,24 @@ img {
   flex-direction: row-reverse
 }
 
+.button_small {
+  padding: 7px 10px;
+}
+
 .button:active {
   background-color: var(--black-active)
 }
 
 .button_green {
   background-color: var(--green)
+}
+
+.button_red {
+  background-color: var(--red)
+}
+
+.button_red:active {
+  background-color: var(--red-hover)
 }
 
 .button_green:active {
@@ -190,6 +204,14 @@ img {
 
 .button_gray:active {
   background-color: var(--gray-active)
+}
+
+.button_green {
+  background-color: var(--green)
+}
+
+.button_green:active {
+  background-color: var(--green-active)
 }
 
 .button_inactive {
