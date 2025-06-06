@@ -25,7 +25,7 @@ export const scheduleApi = baseApi.injectEndpoints({
         }),
         createUserEvent: builder.mutation<IBaseSuccessResponse<IUserScheduleEvent>, Partial<IUserScheduleEvent>>({
             query: (event) => ({
-                url: 'schedule/events-tasks',
+                url: 'schedule/events-tasks/',
                 method: 'POST',
                 body: {
                     event_id: event.id,

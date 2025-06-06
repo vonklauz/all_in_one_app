@@ -64,7 +64,7 @@ export const CalendarForm = () => {
                 <>
                     {/**@ts-ignore */}
                     <Datepicker label={event.title} id={event.id} key={event.id} value={event.sendDate} onChange={updateEventDate} />
-                    {event.sendDate && <div className="flex">
+                    {event.sendDate && <div className="flex mt-2 mb-4 lg:mt-1">
                         <button className="button button_small button_green mr-4" type="button" onClick={() => sendEventToServer(event.id)}>Сохранить</button>
                         <button className="button button_small button_red" type="button" disabled={!event.userEventId} onClick={() => deleteEventFromServer(event.id)}>Удалить</button>
                     </div>}
