@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ru } from "date-fns/locale";
 import { type IInputProps } from "../Input";
 import inputStyles from '../Input/Input.module.css';
+import styles from './Datepicker.module.css';
 import { getDay, isBefore, isToday } from "date-fns";
 
 registerLocale('ru', ru);
@@ -25,6 +26,7 @@ export const Datepicker = ({
     children,
     defaultValue,
     dateFormat,
+    disabled,
     ...props
 }: IDatepickerProps) => {
     const [startDate, setStartDate] = useState();
@@ -40,7 +42,7 @@ export const Datepicker = ({
                 htmlFor={id ? id : name ? name : ''}
                 className={inputStyles.formLabel}
             >{label}</label>
-            <div className={`${inputStyles.inputWrapper} ${props.disabled ? inputStyles.readOnly : ''}`}>
+            <div className={`${inputStyles.inputWrapper} ${styles.datepickerWrapper} ${disabled ? inputStyles.readOnly : ''}`}>
                 <DatePicker
                     name={name}
                     id={id}
@@ -55,7 +57,8 @@ export const Datepicker = ({
                     // }}
                     value={value ? value : undefined}
                     //@ts-ignore
-                    onChange={(date) => onChange(id, date)}
+                    onChange={(date) => onChange({id, date})}
+                    disabled={disabled}
                 />
                 {children}
             </div>

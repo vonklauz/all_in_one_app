@@ -67,6 +67,7 @@ export interface IScheduleEvent {
 export interface IScheduleEventState extends IScheduleEvent {
     sendDate?: string;
     userEventId?: string;
+    disabled?: boolean;
 }
 
 /**
@@ -84,6 +85,7 @@ export interface IUserScheduleEvent {
     sendDate: string,
     send_date?: string,
     event: IScheduleEvent
+    disabled?: boolean;
 }
 
 /**

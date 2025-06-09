@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./schedule.css";
+@import "./icons.css";
 
 @font-face {
   font-family: icons;
@@ -111,17 +112,6 @@ img {
   max-width: 78.5rem;
   margin: 0 auto;
   padding: 0 1.25rem
-}
-
-[class*=icon_]:before {
-  font-family: icons;
-  font-style: normal;
-  font-weight: 400;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 [class*=-ibg] {

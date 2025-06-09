@@ -1,4 +1,4 @@
-import type { IBaseSuccessResponse, IEvents, IScheduleEventState, ISimpleResponse, IUserEvents, IUserScheduleEvent } from "~/Models";
+import type { IBaseSuccessResponse, IEvents, IScheduleEvent, IScheduleEventState, ISimpleResponse, IUserEvents, IUserScheduleEvent } from "~/Models";
 import { baseApi } from "./baseApi";
 
 export const scheduleApi = baseApi.injectEndpoints({
@@ -7,6 +7,12 @@ export const scheduleApi = baseApi.injectEndpoints({
             query: () => ({
                 url: 'schedule/events',
                 method: 'GET',
+            }),
+            transformResponse: (response: IBaseSuccessResponse<IEvents>): IBaseSuccessResponse<IEvents> => ({
+                ...response,
+                data: {
+                    events: response.data.events.map((event: IScheduleEvent) => ({ ...event, disabled: true }))
+                }
             })
         }),
         getUserSchedule: builder.query<IBaseSuccessResponse<IUserEvents>, void>({
@@ -15,12 +21,10 @@ export const scheduleApi = baseApi.injectEndpoints({
                 method: 'GET',
             }),
             transformResponse: (response: IBaseSuccessResponse<{ event_tasks: IUserScheduleEvent[] }>): IBaseSuccessResponse<IUserEvents> => ({
-                success: response.success,
-                error: response.error,
+                ...response,
                 data: {
                     eventTasks: response.data.event_tasks
                 }
-
             })
         }),
         createUserEvent: builder.mutation<IBaseSuccessResponse<IUserScheduleEvent>, Partial<IUserScheduleEvent>>({

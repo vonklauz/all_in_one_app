@@ -20,3 +20,8 @@
     width: 250px;
     background-color: #fff;
 }
+
+.datepicker-wrapper {
+    max-width: 300px;
+    width: 100%;
+}
