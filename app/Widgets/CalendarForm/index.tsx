@@ -25,7 +25,13 @@ export const CalendarForm = () => {
         }
     }, [schedule]);
 
-    const updateEventDate = ({ id, date, disabled }: { id: string, date?: Date | null, disabled?: boolean }) => {
+    useEffect(() => {
+        if(resultCreateEvent?.data?.success) {
+            updateEventDate({id: resultCreateEvent.data.data.event.id, userEventId: resultCreateEvent.data.data.id})
+        }
+    }, [resultCreateEvent])
+
+    const updateEventDate = ({ id, date, disabled, userEventId }: { id: string, date?: Date | null, disabled?: boolean, userEventId?: string }) => {
         const newForm = cloneDeep(form) as IScheduleEventState[];
         const eventToUpdate = newForm.find((event) => event.id === id);
         if (eventToUpdate) {
@@ -36,6 +42,9 @@ export const CalendarForm = () => {
             }
             if (disabled !== undefined) {
                 eventToUpdate.disabled = disabled;
+            }
+            if (userEventId) {
+                eventToUpdate.userEventId = userEventId;
             }
             setForm([...newForm]);
         }
@@ -59,7 +68,7 @@ export const CalendarForm = () => {
         const eventToDelete = form.find((event) => event.id === id);
         if (eventToDelete) {
             deleteEvent({ userEventId: eventToDelete.userEventId })
-            updateEventDate({ id, date: null });
+            updateEventDate({ id, date: null, disabled: true });
         }
     }
 
