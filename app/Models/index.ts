@@ -95,5 +95,22 @@ export interface IUserEvents {
     eventTasks: IUserScheduleEvent[];
 }
 
+export interface IRawDocument {
+    document_id: string,
+    title: string
+}
 
+export interface IDocument {
+    documentId: string,
+    title: string
+}
 
+export interface IDocumentsSection {
+    title: string,
+    s3_url_file?: string | null,
+    documents: IRawDocument[] | IDocument[]
+}
+
+export interface IDocumentsSchema {
+    [key: string]: IDocumentsSection
+}
