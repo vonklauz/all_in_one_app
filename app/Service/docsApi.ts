@@ -1,34 +1,25 @@
-import type { IBaseSuccessResponse, IDocumentsSchema, IDocumentsSection, IScheduleEventState, ISimpleResponse, IUserEvents, IUserScheduleEvent } from "~/Models";
+import type { IBaseSuccessResponse, IDocumentsSchema, IDocumentsSection, IScheduleEventState, ISimpleResponse, IUserDocument } from "~/Models";
 import { baseApi } from "./baseApi";
 
 export const docsApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getDocuments: builder.query<IBaseSuccessResponse<[{[key: number]: IDocumentsSection}]>, void>({
+        getDocuments: builder.query<IBaseSuccessResponse<[{ [key: number]: IDocumentsSection }]>, void>({
             query: () => ({
                 url: 'documents',
                 method: 'GET',
             })
         }),
-        getUserDocuments: builder.query<IBaseSuccessResponse<IUserEvents>, void>({
+        getUserDocuments: builder.query<IBaseSuccessResponse<[{ [key: string]: IUserDocument[] }]>, void>({
             query: () => ({
                 url: 'documents/client-documents',
                 method: 'GET',
             }),
-            transformResponse: (response: IBaseSuccessResponse<{ event_tasks: IUserScheduleEvent[] }>): IBaseSuccessResponse<IUserEvents> => ({
-                ...response,
-                data: {
-                    eventTasks: response.data.event_tasks
-                }
-            })
         }),
-        uploadDocument: builder.mutation<IBaseSuccessResponse<IUserScheduleEvent>, Partial<IUserScheduleEvent>>({
-            query: (event) => ({
-                url: 'documents/client-documents',
+        uploadDocument: builder.mutation<IBaseSuccessResponse<[{ [key: number]: IUserDocument[] }]>, { documentId: string, files: FormData }>({
+            query: ({ documentId, files }) => ({
+                url: `documents/client-documents?document_id=${documentId}`,
                 method: 'POST',
-                body: {
-                    event_id: event.id,
-                    send_date: event.sendDate
-                }
+                body: files
             })
         }),
         updateDocument: builder.mutation<ISimpleResponse, Partial<IScheduleEventState>>({

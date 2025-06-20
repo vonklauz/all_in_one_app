@@ -21,7 +21,6 @@
 .date-input {
     width: 100%;
     display: block;
-
     caret-color: inherit;
     height: 3.0625rem;
     color: var(--text-black);
@@ -29,6 +28,13 @@
 
 .input {
     padding: 0 15px;
+}
+
+.input-like-span {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
 }
 
 .input-wrapper .input,

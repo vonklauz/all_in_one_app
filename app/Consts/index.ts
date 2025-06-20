@@ -36,3 +36,21 @@ export const MENU_LINKS: Link[] = [
 ]
 
 export const REDIRECT_TIMING = 3000;
+
+export const ALLOWED_FILE_TYPES = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/tif',
+    'image/tiff',
+    'application/msword',
+    'application/pdf',
+    'application/psx',
+    'application/vnd.openxmformats-officedocument.wordprocessingml.document',
+    'application/zip',
+    'application/x-zip',
+    'application/octet-stream',
+    'application/x-zip-compressed',
+    'application/x-7z-compressed',
+    'application/x-rar-compressed',
+];

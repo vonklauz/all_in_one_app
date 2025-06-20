@@ -95,20 +95,29 @@ export interface IUserEvents {
     eventTasks: IUserScheduleEvent[];
 }
 
-export interface IRawDocument {
-    document_id: string,
-    title: string
-}
-
 export interface IDocument {
-    documentId: string,
+    document_id: string,
     title: string
 }
 
 export interface IDocumentsSection {
     title: string,
     s3_url_file?: string | null,
-    documents: IRawDocument[] | IDocument[]
+    documents: IDocument[]
+}
+
+export interface IUserDocument {
+    s3_url: string,
+    document_id: string
+}
+
+export interface IStateUserDocument extends IDocument {
+    userDocs?: IUserDocument[],
+    attachedDoc?: File,
+}
+
+export interface IDocumentsFormState extends Omit<IDocumentsSection, 'documents'> {
+    documents: IStateUserDocument[]
 }
 
 export interface IDocumentsSchema {

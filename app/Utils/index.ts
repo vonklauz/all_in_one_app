@@ -50,3 +50,18 @@ export const getDateFromString = (date: string): string => {
     const [day, month, year] = date.split('.').map(Number);
     return format(new Date(year, month - 1, day), 'yyyy-MM-dd');
 }
+
+/**
+ * Проверяет пустой ли объект или массив.
+ * @param value массив или объект
+ * @returns boolean
+ */
+export const isEmpty = (value: any[] | object): boolean => {
+    if (Array.isArray(value)) {
+        return value.length === 0;
+    } else if (typeof value === 'object') {
+        return !Object.keys(value).length;
+    }
+
+    return false;
+}
