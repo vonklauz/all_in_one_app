@@ -1,4 +1,4 @@
-import type { IBaseSuccessResponse, IDocumentsSchema, IDocumentsSection, IScheduleEventState, ISimpleResponse, IUserDocument } from "~/Models";
+import type { IBaseSuccessResponse, IDocumentsSection, IUserDocument } from "~/Models";
 import { baseApi } from "./baseApi";
 
 export const docsApi = baseApi.injectEndpoints({

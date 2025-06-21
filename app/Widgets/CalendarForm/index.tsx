@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Datepicker } from "~/Components/Datepicker";
 import styles from './CalendarForm.module.css';
-import type { IScheduleEventState, IUserScheduleEvent } from "~/Models";
+import type { IScheduleEventState } from "~/Models";
 import { useEffect, useState } from "react";
 import { CalendarFormSkeleton } from "~/Components/Skeleton/CalendarFormSkeleton";
 import { useLoadSchedule } from "~/Hooks/useLoadSchedule";

@@ -1,4 +1,4 @@
-import { useCallback, useRef, type ChangeEvent, type InputHTMLAttributes, type ReactNode } from 'react';
+import { useRef, type ChangeEvent, type InputHTMLAttributes, type ReactNode } from 'react';
 import styles from './Input.module.css';
 
 export interface IFileInputProps extends InputHTMLAttributes<HTMLInputElement> {

@@ -2,12 +2,10 @@
 import { useGetUserMutation } from '~/Service/baseApi';
 import styles from './User.module.css'
 import { useEffect, useState } from 'react';
-import type { User } from '~/Models';
 import { UserThumb } from './UserThumb';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '~/Store';
 import { setUser } from '~/Store/User/userSlice';
-import type { Route } from '../../+types/root';
 import { useLogoutMutation } from '~/Service/authApi';
 import { handleLogoutSuccess } from '~/Utils';
 
