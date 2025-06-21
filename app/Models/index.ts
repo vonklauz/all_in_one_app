@@ -108,7 +108,8 @@ export interface IDocumentsSection {
 
 export interface IUserDocument {
     s3_url: string,
-    document_id: string
+    document_id: string,
+    id: string
 }
 
 export interface IStateUserDocument extends IDocument {

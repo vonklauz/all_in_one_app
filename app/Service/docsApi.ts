@@ -15,28 +15,19 @@ export const docsApi = baseApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        uploadDocument: builder.mutation<IBaseSuccessResponse<[{ [key: number]: IUserDocument[] }]>, { documentId: string, files: FormData }>({
-            query: ({ documentId, files }) => ({
+        uploadDocument: builder.mutation<IBaseSuccessResponse<[IUserDocument]>, { documentId: string, files: FormData, method: 'POST' | 'PUT' }>({
+            query: ({ documentId, files, method }) => ({
                 url: `documents/client-documents?document_id=${documentId}`,
-                method: 'POST',
+                method: method,
                 body: files
             })
         }),
-        updateDocument: builder.mutation<ISimpleResponse, Partial<IScheduleEventState>>({
-            query: ({ sendDate, id }) => ({
-                url: `schedule/events-tasks/${id}`,
-                method: 'PUT',
-                body: {
-                    send_date: sendDate
-                }
+        deleteUserDocument: builder.mutation<IBaseSuccessResponse<{}>, { documentId: string }>({
+            query: ({ documentId }) => ({
+                url: `documents/client-documents/${documentId}`,
+                method: 'DELETE',
             })
         }),
-        // deleteUserEvent: builder.mutation<ISimpleResponse, Partial<IScheduleEventState>>({
-        //     query: ({ userEventId }) => ({
-        //         url: `schedule/events-tasks/${userEventId}`,
-        //         method: 'DELETE',
-        //     })
-        // }),
     })
 });
 
@@ -44,5 +35,5 @@ export const {
     useGetDocumentsQuery,
     useGetUserDocumentsQuery,
     useUploadDocumentMutation,
-    useUpdateDocumentMutation
+    useDeleteUserDocumentMutation,
 } = docsApi;

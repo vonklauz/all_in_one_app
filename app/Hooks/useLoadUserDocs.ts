@@ -50,12 +50,12 @@ export const useLoadUserDocs = (): { userDocs: IDocumentsFormState[] | undefined
 
     const concatSchemaAndUserDocs = (newFormState: IDocumentsSection[], userDocs: IUserDocument[]): IDocumentsFormState[] => {
         const concatResult: IDocumentsFormState[] = cloneDeep(newFormState);
-
         concatResult.forEach((section) => {
             userDocs.forEach((doc) => {
                 const documentIndex = section.documents.findIndex((docItem) => docItem.document_id === doc.document_id);
+                const document = section.documents[documentIndex];
                 if (documentIndex > -1) {
-                    section.documents[documentIndex] = { ...section.documents[documentIndex], userDocs: [{ ...doc }] };
+                    section.documents[documentIndex] = { ...section.documents[documentIndex], userDocs: document.userDocs ? [...document.userDocs, { ...doc }] : [{ ...doc }] };
                 }
             })
         })

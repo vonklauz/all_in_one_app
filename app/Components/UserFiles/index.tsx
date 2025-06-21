@@ -1,20 +1,22 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { FileInput, type IFileInputProps } from "../Input/FileInput"
 import type { IUserDocument } from '~/Models';
 
 interface IUserFilesProps extends IFileInputProps {
     uploadedFiles?: IUserDocument[],
-    onDelete?: (fileId: string) => void;
+    onDelete?: (documentId: string) => void;
+    attachedDoc?: File;
 }
 
-export const UserFiles = ({uploadedFiles, onDelete, ...props}: IUserFilesProps) => {
+export const UserFiles = ({ uploadedFiles, onDelete, attachedDoc, ...props }: IUserFilesProps) => {
 
     const renderDocsList = () => {
         if (uploadedFiles) {
             return uploadedFiles.map((file, index) => (
-                <div className='mb-2'>
+                <div className='mb-2 flex' key={file.id}>
                     <a target="blank" href={file.s3_url}>Документ {index + 1}</a>
+                    <XMarkIcon className="w-5 group-data-open:rotate-180" onClick={() => onDelete && onDelete(file.id)} style={{cursor: 'pointer'}}/>
                 </div>
             ))
         }
@@ -28,10 +30,11 @@ export const UserFiles = ({uploadedFiles, onDelete, ...props}: IUserFilesProps) 
                 <DisclosureButton className="group flex items-center gap-2">
                     Загруженные файлы
                     <ChevronDownIcon className="w-5 group-data-open:rotate-180" />
+
                 </DisclosureButton>
                 <DisclosurePanel>{renderDocsList()}</DisclosurePanel>
             </Disclosure>
-            <FileInput {...props} />
+            <FileInput {...props} fileName={attachedDoc?.name} />
         </>
     )
 }

@@ -9,6 +9,7 @@ export interface IFileInputProps extends InputHTMLAttributes<HTMLInputElement> {
     error?: string;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     children?: ReactNode;
+    fileName?: string;
 }
 
 export const FileInput = ({
@@ -19,6 +20,7 @@ export const FileInput = ({
     error,
     onChange,
     children,
+    fileName,
     ...props
 }: IFileInputProps) => {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -40,7 +42,7 @@ export const FileInput = ({
                     ref={fileInputRef}
                     {...props}
                 />
-                <span className={`${styles.input} ${styles.inputLikeSpan}`} onClick={() => fileInputRef?.current?.click()}>Выберите файл</span>
+                <span className={`${styles.input} ${styles.inputLikeSpan}`} onClick={() => fileInputRef?.current?.click()}>{fileName ? fileName : 'Выберите файл'}</span>
                 {children}
             </div>
             {error && <span className={styles.error}>{error}</span>}

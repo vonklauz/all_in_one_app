@@ -39,7 +39,9 @@ export const remapServerFieldToFrontFormat = (backendField: string): keyof Regis
     return fieldsMap[backendField] || backendField;
 }
 
-export const cloneDeep = (data: any) => JSON.parse(JSON.stringify(data));
+export const cloneDeep = <T>(data: T): T => {
+    return JSON.parse(JSON.stringify(data));
+};
 
 /**
  * Возврашает дату в виде строки, ожидаемой сервером, если она валидна.
