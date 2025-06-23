@@ -252,6 +252,10 @@ img {
   font-size: .875rem;
 }
 
+.note {
+  color: var(--text-gray)
+}
+
 @media (any-hover:hover) {
   .button:hover {
     background-color: var(--black-hover)

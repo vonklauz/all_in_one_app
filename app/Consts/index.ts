@@ -54,3 +54,8 @@ export const ALLOWED_FILE_TYPES = [
     'application/x-7z-compressed',
     'application/x-rar-compressed',
 ];
+
+/**
+ * Допустимые расширения файлов в упрощённом виде, которые показываем клиенту.
+ */
+export const ALLOWED_FILE_TYPES_TEXT = 'pdf, tiff, jpeg, png, docx, zip, rar, 7z.'

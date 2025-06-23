@@ -3,6 +3,7 @@ import { FormItem } from "~/Components/FormCustom/FormItem";
 import { FormWrapper } from "~/Components/FormCustom/FormWrapper";
 import { FormSkeleton } from "~/Components/Skeleton/FormSkeleton";
 import { UserFiles } from "~/Components/UserFiles";
+import { ALLOWED_FILE_TYPES, ALLOWED_FILE_TYPES_TEXT } from "~/Consts";
 import { useLoadUserDocs } from "~/Hooks/useLoadUserDocs";
 import type { IDocumentsFormState } from "~/Models";
 import { useDeleteUserDocumentMutation, useUploadDocumentMutation } from "~/Service/docsApi"
@@ -27,15 +28,16 @@ export const DocumentsForm = () => {
 
     useEffect(() => {
         if (uploadDocData?.success) {
-            const response = uploadDocData.data[0];
+            const response = uploadDocData.data;
             const newForm = [...form];
             newForm.some((sectionItem) => {
-                const docsIndex = sectionItem.documents.findIndex((documentItem) => documentItem.document_id === response.document_id)
+                //За один раз можем загрузить документы только из одного инпута, поэтому id берём из первого же элемента массива
+                const docsIndex = sectionItem.documents.findIndex((documentItem) => documentItem.document_id === response[0].document_id)
                 if (docsIndex > -1) {
                     if (sectionItem.documents[docsIndex].userDocs) {
-                        sectionItem.documents[docsIndex].userDocs.push({ ...response })
+                        sectionItem.documents[docsIndex].userDocs.push(...response)
                     } else {
-                        sectionItem.documents[docsIndex].userDocs = [{ ...response }];
+                        sectionItem.documents[docsIndex].userDocs = [...response];
                     }
                 }
             })
@@ -46,26 +48,27 @@ export const DocumentsForm = () => {
     const handleAttachFile = (sectionIndex: number, docIndex: number) => (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const selectedFiles = Array.from(e.target.files);
-            if (selectedFiles.length) {
+            console.log(selectedFiles)
+            if (selectedFiles.length && selectedFiles.length < 11) {
                 const newForm = [...form];
-                newForm[sectionIndex].documents[docIndex].attachedDoc = selectedFiles[0];
+                newForm[sectionIndex].documents[docIndex].attachedDocs = [...selectedFiles.filter((file) => ALLOWED_FILE_TYPES.includes(file.type))];
                 setForm([...newForm])
-                e.target.value = '';
             }
+            e.target.value = '';
         }
     }
 
     const handleUnattachFile = (sectionIndex: number, docIndex: number) => {
         const newForm = [...form];
-        delete newForm[sectionIndex].documents[docIndex].attachedDoc;
+        delete newForm[sectionIndex].documents[docIndex].attachedDocs;
         setForm([...newForm]);
     }
 
     const uploadFile = (sectionIndex: number, docIndex: number) => {
-        const { document_id, attachedDoc } = form[sectionIndex].documents[docIndex];
+        const { document_id, attachedDocs } = form[sectionIndex].documents[docIndex];
         const formData = new FormData();
-        if (attachedDoc) {
-            formData.append('files', attachedDoc);
+        if (attachedDocs) {
+            attachedDocs.forEach((file) => formData.append('files', file));
             const method = form[sectionIndex].documents[docIndex].userDocs ? 'PUT' : 'POST';
             uploadDocument({ documentId: document_id, files: formData, method });
             handleUnattachFile(sectionIndex, docIndex);
@@ -97,8 +100,9 @@ export const DocumentsForm = () => {
     return (
         <div className="docs-container">
             <FormWrapper action={() => { }}>
+                <p className="mb-4 text note">Разрешенные типы файлов: {ALLOWED_FILE_TYPES_TEXT}</p>
                 {form?.map((sectionItem, sectionIndex) => (<FormItem title={sectionItem.title} key={sectionItem.title}>
-                    {sectionItem.documents.map(({ title, document_id, userDocs, attachedDoc }, docIndex) => (
+                    {sectionItem.documents.map(({ title, document_id, userDocs, attachedDocs }, docIndex) => (
                         <Fragment key={document_id}>
                             <UserFiles
                                 label={title}
@@ -107,9 +111,10 @@ export const DocumentsForm = () => {
                                 onDelete={deleteUserDocument(sectionIndex, docIndex)}
                                 uploadedFiles={userDocs}
                                 disabled={isDocumentUploading}
-                                attachedDoc={attachedDoc}
+                                attachedDocs={attachedDocs}
+                                multiple={true}
                             />
-                            {attachedDoc && (
+                            {attachedDocs && (
                                 <div className="flex mt-1 mb-4">
                                     <button className="button button_small button_green mr-4" type="button" disabled={isDocumentUploading} onClick={() => uploadFile(sectionIndex, docIndex)}>Отправить</button>
                                     <button className="button button_small button_red" type="button" disabled={isDocumentUploading} onClick={() => handleUnattachFile(sectionIndex, docIndex)}>Очистить</button>

@@ -6,10 +6,11 @@ export interface IFileInputProps extends InputHTMLAttributes<HTMLInputElement> {
     name?: string;
     id?: string;
     value?: string;
+    multiple?: boolean;
     error?: string;
     onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     children?: ReactNode;
-    fileName?: string;
+    fileName?: string | undefined;
 }
 
 export const FileInput = ({
@@ -17,6 +18,7 @@ export const FileInput = ({
     name,
     id,
     value,
+    multiple = false,
     error,
     onChange,
     children,
@@ -34,6 +36,7 @@ export const FileInput = ({
             <div className={`${styles.inputWrapper} ${props.disabled ? styles.readOnly : ''}`}>
                 <input
                     type="file"
+                    multiple={multiple}
                     name={name}
                     id={id}
                     value={value}
@@ -42,7 +45,7 @@ export const FileInput = ({
                     ref={fileInputRef}
                     {...props}
                 />
-                <span className={`${styles.input} ${styles.inputLikeSpan}`} onClick={() => fileInputRef?.current?.click()}>{fileName ? fileName : 'Выберите файл'}</span>
+                <span className={`${styles.input} ${styles.inputLikeSpan}`} title={fileName} onClick={() => fileInputRef?.current?.click()}>{fileName ? fileName : `Выберите ${multiple ? 'до 10 файлов' : 'файл'}`}</span>
                 {children}
             </div>
             {error && <span className={styles.error}>{error}</span>}

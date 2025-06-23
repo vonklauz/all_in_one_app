@@ -15,7 +15,7 @@ export const docsApi = baseApi.injectEndpoints({
                 method: 'GET',
             }),
         }),
-        uploadDocument: builder.mutation<IBaseSuccessResponse<[IUserDocument]>, { documentId: string, files: FormData, method: 'POST' | 'PUT' }>({
+        uploadDocument: builder.mutation<IBaseSuccessResponse<IUserDocument[]>, { documentId: string, files: FormData, method: 'POST' | 'PUT' }>({
             query: ({ documentId, files, method }) => ({
                 url: `documents/client-documents?document_id=${documentId}`,
                 method: method,
