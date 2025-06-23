@@ -17,6 +17,7 @@ export const DocumentsForm = () => {
 
     const { isLoading: isDocumentUploading, data: uploadDocData } = resultUploadDocument;
     const { isLoading: isDocumentDeleting } = resultDeleteDocument;
+    const isLoadingDocs = isLoading || isDocumentDeleting || isDocumentUploading;
 
     console.log('form', form)
 
@@ -110,14 +111,14 @@ export const DocumentsForm = () => {
                                 onChange={handleAttachFile(sectionIndex, docIndex)}
                                 onDelete={deleteUserDocument(sectionIndex, docIndex)}
                                 uploadedFiles={userDocs}
-                                disabled={isDocumentUploading}
+                                disabled={isLoadingDocs}
                                 attachedDocs={attachedDocs}
                                 multiple={true}
                             />
                             {attachedDocs && (
                                 <div className="flex mt-1 mb-4">
-                                    <button className="button button_small button_green mr-4" type="button" disabled={isDocumentUploading} onClick={() => uploadFile(sectionIndex, docIndex)}>Отправить</button>
-                                    <button className="button button_small button_red" type="button" disabled={isDocumentUploading} onClick={() => handleUnattachFile(sectionIndex, docIndex)}>Очистить</button>
+                                    <button className="button button_small button_green mr-4" type="button" disabled={isLoadingDocs} onClick={() => uploadFile(sectionIndex, docIndex)}>Отправить</button>
+                                    <button className="button button_small button_red" type="button" disabled={isLoadingDocs} onClick={() => handleUnattachFile(sectionIndex, docIndex)}>Очистить</button>
                                 </div>
                             )}
                         </Fragment>

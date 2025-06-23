@@ -17,7 +17,7 @@ export const UserFiles = ({ uploadedFiles, onDelete, attachedDocs, ...props }: I
             return uploadedFiles.map((file, index) => (
                 <div className='mb-2 flex' key={file.id}>
                     <a target="blank" href={file.s3_url}>Документ {index + 1}</a>
-                    <XMarkIcon className="w-5 group-data-open:rotate-180" onClick={() => onDelete && onDelete(file.id)} style={{ cursor: 'pointer' }} />
+                    <XMarkIcon className="w-5 group-data-open:rotate-180 ml-3" onClick={() => (onDelete && !props.disabled) &&  onDelete(file.id)} style={{ cursor: 'pointer' }} />
                 </div>
             ))
         }
