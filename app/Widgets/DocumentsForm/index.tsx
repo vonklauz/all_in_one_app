@@ -27,6 +27,17 @@ export const DocumentsForm = () => {
         }
     }, [userDocs]);
 
+    /**
+     * Задаём таймаут для отображения ошибки в случаях, когда клиентское действие не обязательно для её снятия.
+     */
+    const setTemproraryError = (newForm: IDocumentsFormState[], sectionIndex: number, docIndex: number) => {
+        setForm([...newForm])
+        setTimeout(() => {
+            newForm[sectionIndex].documents[docIndex].error = '';
+            setForm([...newForm])
+        }, 5000);
+    }
+
     useEffect(() => {
         if (uploadDocData?.success) {
             const response = uploadDocData.data;
@@ -52,8 +63,19 @@ export const DocumentsForm = () => {
             console.log(selectedFiles)
             if (selectedFiles.length && selectedFiles.length < 11) {
                 const newForm = [...form];
+                const prohibitedFiles = [...selectedFiles.filter((file) => !ALLOWED_FILE_TYPES.includes(file.type))];
                 newForm[sectionIndex].documents[docIndex].attachedDocs = [...selectedFiles.filter((file) => ALLOWED_FILE_TYPES.includes(file.type))];
-                setForm([...newForm])
+                if (prohibitedFiles.length) {
+                    const erorrMessage = `
+                        Файл(ы) ${prohibitedFiles.map((file) => file.name).join(', ')} не добавлен(ы). 
+                        Поддерживаются файлы с расширением ${ALLOWED_FILE_TYPES_TEXT} и не более 10 файлов за раз.
+                    `
+                    newForm[sectionIndex].documents[docIndex].error = erorrMessage;
+                    setTemproraryError(newForm, sectionIndex, docIndex);
+                    e.target.value = '';
+                    return;
+                }
+                setForm([...newForm]);
             }
             e.target.value = '';
         }
@@ -103,7 +125,7 @@ export const DocumentsForm = () => {
             <FormWrapper action={() => { }}>
                 <p className="mb-4 text note">Разрешенные типы файлов: {ALLOWED_FILE_TYPES_TEXT}</p>
                 {form?.map((sectionItem, sectionIndex) => (<FormItem title={sectionItem.title} key={sectionItem.title}>
-                    {sectionItem.documents.map(({ title, document_id, userDocs, attachedDocs }, docIndex) => (
+                    {sectionItem.documents.map(({ title, document_id, userDocs, attachedDocs, error }, docIndex) => (
                         <Fragment key={document_id}>
                             <UserFiles
                                 label={title}
@@ -114,13 +136,14 @@ export const DocumentsForm = () => {
                                 disabled={isLoadingDocs}
                                 attachedDocs={attachedDocs}
                                 multiple={true}
+                                error={error}
                             />
-                            {attachedDocs && (
+                            {attachedDocs && attachedDocs.length ? (
                                 <div className="flex mt-1 mb-4">
                                     <button className="button button_small button_green mr-4" type="button" disabled={isLoadingDocs} onClick={() => uploadFile(sectionIndex, docIndex)}>Отправить</button>
                                     <button className="button button_small button_red" type="button" disabled={isLoadingDocs} onClick={() => handleUnattachFile(sectionIndex, docIndex)}>Очистить</button>
                                 </div>
-                            )}
+                            ) : ''}
                         </Fragment>
                     ))}
                 </FormItem>))}

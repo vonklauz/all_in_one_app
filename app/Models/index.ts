@@ -115,6 +115,7 @@ export interface IUserDocument {
 export interface IStateUserDocument extends IDocument {
     userDocs?: IUserDocument[],
     attachedDocs?: File[],
+    error?: string;
 }
 
 export interface IDocumentsFormState extends Omit<IDocumentsSection, 'documents'> {
