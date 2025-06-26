@@ -12,6 +12,7 @@ export default [
         route("profile", "./Pages/Profile/Profile.tsx"),
         route("calendar", "./Pages/Calendar/Calendar.tsx"),
         route("documents", "./Pages/Documents/Documents.tsx"),
+        route("dossier", "./Pages/Dossier/Dossier.tsx"),
     ]),
     layout("./Layouts/confirm/layout.tsx", [
         route("email/confirm", "./Pages/Confirm/Confirm.tsx"),

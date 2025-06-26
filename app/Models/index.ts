@@ -125,3 +125,33 @@ export interface IDocumentsFormState extends Omit<IDocumentsSection, 'documents'
 export interface IDocumentsSchema {
     [key: string]: IDocumentsSection
 }
+
+export interface IFormSchema {
+    schema_id: string;
+    form_title: string;
+    form_description: string;
+}
+
+export interface IDossierFormField {
+    id: string;
+    title: string;
+    type: string;
+    length?: number;
+    mask?: string;
+    required: boolean;
+    choices: any[];
+    groups: any[];
+}
+
+export interface IDossierFormBlock {
+    block_title: string;
+    fields: IDossierFormField[];
+}
+
+export interface IDossierFormSection extends IFormSchema {
+    number_form: number;
+    blocks: IDossierFormBlock[];
+}
+export interface IDossierFormState {
+    sections: IDossierFormSection[];
+}
