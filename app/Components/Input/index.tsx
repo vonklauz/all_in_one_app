@@ -27,10 +27,10 @@ export const Input = ({
     ...props
 }: IInputProps) => {
     return (
-        <div className={styles.formRow}>
+        <div>
             <label
                 htmlFor={id ? id : name ? name : ''}
-                className={styles.formLabel}
+                className="form-label"
             >{label}</label>
             <div className={`${styles.inputWrapper} ${props.disabled ? styles.readOnly : ''}`}>
                 <input

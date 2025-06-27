@@ -214,6 +214,13 @@ img {
   width: 100%
 }
 
+.form-label {
+  font-weight: 700;
+  display: block;
+  font-size: 1rem;
+  color: var(--text-gray);
+}
+
 .link-action {
   color: var(--blue);
   transition: color .3s ease-in-out
@@ -293,6 +300,10 @@ img {
 }
 
 @media (min-width: 78.5em) {
+  .form-label {
+    margin-bottom: .5rem;
+  }
+
   .title_h1 {
     font-size: 3.125rem;
   }
@@ -322,6 +333,9 @@ img {
 }
 
 @media (max-width:20em) {
+  .form-label {
+        margin-bottom: .3125rem
+    }
   .title_h1 {
     font-size: 2.375rem
   }
@@ -425,6 +439,18 @@ img {
   @supports not (padding-bottom:clamp(3.75rem, 2.8952991453rem + 4.2735042735vw, 6.25rem)) {
     .section-padding {
       padding-bottom: calc(3.75rem + 2.5 * (100vw - 20rem)/ 58.5)
+    }
+  }
+
+  @supports (margin-bottom:clamp(0.3125rem, 0.2483974359rem + 0.3205128205vw, 0.5rem)) {
+    .form-label {
+      margin-bottom: clamp(.3125rem, .2483974359rem + .3205128205vw, .5rem)
+    }
+  }
+
+  @supports not (margin-bottom:clamp(0.3125rem, 0.2483974359rem + 0.3205128205vw, 0.5rem)) {
+    .form-label {
+      margin-bottom: calc(.3125rem + .1875 * (100vw - 20rem)/ 58.5)
     }
   }
 }

@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { FormItem } from "~/Components/FormCustom/FormItem";
 import { FormWrapper } from "~/Components/FormCustom/FormWrapper";
 import { Input } from "~/Components/Input";
+import { RadioInput } from "~/Components/RadioInput";
 import { FormSkeleton } from "~/Components/Skeleton/FormSkeleton";
 import type { IDossierFormSection, IDossierFormState } from "~/Models";
 import { dossierApi, useGetFormSchemasQuery } from "~/Service/dossierApi"
@@ -59,9 +60,13 @@ export const DossierForm = () => {
                     {section.blocks.map((block) => (
                         <Fragment key={block.block_title}>
                             <h4 className="title text-lg mt-4">{block.block_title}</h4>
-                            {block.fields.map(({ id, title, type }) => (
-                                <Input key={id} label={title} />
-                            ))}
+                            {block.fields.map(({ id, title, type, ...props }) => {
+                                if (type === 'text') {
+                                    return <Input key={id} label={title} />
+                                } else if (type === 'select') {
+                                    return <RadioInput {...{ id, title, ...props }} />
+                                }
+                            })}
                         </Fragment>
 
                     ))}

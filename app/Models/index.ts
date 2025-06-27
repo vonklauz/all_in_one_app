@@ -132,6 +132,11 @@ export interface IFormSchema {
     form_description: string;
 }
 
+export interface IRadioChoice {
+    id: string;
+    label: string;
+}
+
 export interface IDossierFormField {
     id: string;
     title: string;
@@ -139,7 +144,7 @@ export interface IDossierFormField {
     length?: number;
     mask?: string;
     required: boolean;
-    choices: any[];
+    choices: IRadioChoice[];
     groups: any[];
 }
 
