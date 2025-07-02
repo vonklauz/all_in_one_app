@@ -8,13 +8,14 @@ export default [
         route("login", "./Pages/Login/Login.tsx"),
         route("register", "./Pages/Register/Register.tsx"),
     ]),
+    layout("./Layouts/confirm/layout.tsx", [
+        route("email/confirm", "./Pages/Confirm/Confirm.tsx"),
+    ]),
     layout("./Layouts/protected/layout.tsx", [
         route("profile", "./Pages/Profile/Profile.tsx"),
         route("calendar", "./Pages/Calendar/Calendar.tsx"),
         route("documents", "./Pages/Documents/Documents.tsx"),
-        route("dossier", "./Pages/Dossier/Dossier.tsx"),
-    ]),
-    layout("./Layouts/confirm/layout.tsx", [
-        route("email/confirm", "./Pages/Confirm/Confirm.tsx"),
+        route("dossiers-list", "./Pages/DossierList/DossierList.tsx"),
+        route("dossiers-list/dossier", "./Pages/DossierSingle/DossierSingle.tsx"),
     ]),
 ] satisfies RouteConfig;

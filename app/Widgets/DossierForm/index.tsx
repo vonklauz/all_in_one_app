@@ -4,46 +4,35 @@ import { FormWrapper } from "~/Components/FormCustom/FormWrapper";
 import { Input } from "~/Components/Input";
 import { RadioInput } from "~/Components/RadioInput";
 import { FormSkeleton } from "~/Components/Skeleton/FormSkeleton";
-import type { IDossierFormSection, IDossierFormState } from "~/Models";
-import { dossierApi, useGetFormSchemasQuery } from "~/Service/dossierApi"
+import type { IDossierFormSection } from "~/Models";
+import { dossierApi } from "~/Service/dossierApi"
 import { dispatch } from "~/Store";
+import { cloneDeep } from "~/Utils";
 
 export const DossierForm = () => {
-    const [form, setForm] = useState<IDossierFormState>();
+    const [form, setForm] = useState<IDossierFormSection>();
     const [isLoading, setIsLoading] = useState(true);
-    const { data: formSchema } = useGetFormSchemasQuery();
+    const url = new URL(window.location.href);
+    const formId = url.searchParams.get("id");
     console.log('form', form)
 
-    const getShcemasById = (ids: string[]) => {
-        const promises = ids.map((id) => {
-            return dispatch(dossierApi.endpoints.getSchemaById.initiate({ schemaId: id }))
-        })
-        return Promise.all(promises);
+    const getFormById = (id: string) => {
+        return dispatch(dossierApi.endpoints.getSchemaById.initiate({ schemaId: id }))
     }
 
     useEffect(() => {
-        if (formSchema?.success) {
-            const fetchData = async () => {
-                const ids = formSchema?.data.map((schema) => schema.schema_id)
-                const data = await getShcemasById(ids)
-                // console.log(data)
-                const result = data?.map((responseObj) => {
-                    if (responseObj.isSuccess) {
-                        return responseObj.data.data;
-                    }
-                });
-
-                if (result.length) {
-                    setForm({
-                        //@ts-ignore
-                        sections: [...result]
-                    });
+        if (formId) {
+            const getForm = async () => {
+                const response = await getFormById(formId);
+                if (response.data?.success) {
+                    setForm({ ...cloneDeep(response.data.data) })
                     setIsLoading(false);
                 }
             }
-            fetchData();
+            getForm()
         }
-    }, [formSchema])
+
+    }, [formId])
 
     if (isLoading) {
         return (
@@ -53,25 +42,28 @@ export const DossierForm = () => {
         )
     }
 
-    return <div className="dossier-container">
-        <FormWrapper action={() => { }}>
-            {form?.sections?.map((section, index) => (
-                <FormItem title={section.form_title} key={section.schema_id}>
-                    {section.blocks.map((block) => (
-                        <Fragment key={block.block_title}>
-                            <h4 className="title text-lg mt-4">{block.block_title}</h4>
-                            {block.fields.map(({ id, title, type, ...props }) => {
-                                if (type === 'text') {
-                                    return <Input key={id} label={title} />
-                                } else if (type === 'select') {
-                                    return <RadioInput {...{ id, title, ...props }} />
-                                }
-                            })}
-                        </Fragment>
+    if (form) {
+        return (
+            <div className="dossier-container">
+                <FormWrapper action={() => { }}>
+                    <FormItem title={form.form_title} key={form.schema_id}>
+                        {form.blocks.map((block) => (
+                            <Fragment key={block.block_title}>
+                                <h4 className="title text-lg mt-4">{block.block_title}</h4>
+                                {block.fields.map(({ id, title, type, ...props }) => {
+                                    if (type === 'text') {
+                                        return <Input key={id} label={title} />
+                                    } else if (type === 'select') {
+                                        return <RadioInput {...{ id, title, ...props }} key={id}/>
+                                    }
+                                })}
+                            </Fragment>
 
-                    ))}
-                </FormItem>
-            ))}
-        </FormWrapper>
-    </div>
+                        ))}
+                    </FormItem>
+                </FormWrapper>
+            </div>
+        )
+    }
+
 }

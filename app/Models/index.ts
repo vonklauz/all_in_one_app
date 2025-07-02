@@ -157,6 +157,3 @@ export interface IDossierFormSection extends IFormSchema {
     number_form: number;
     blocks: IDossierFormBlock[];
 }
-export interface IDossierFormState {
-    sections: IDossierFormSection[];
-}

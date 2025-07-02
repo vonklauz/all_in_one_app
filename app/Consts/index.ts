@@ -10,8 +10,8 @@ export const MENU_LINKS: Link[] = [
     },
     {
         label: 'Анкеты',
-        path: '/dossier',
-        isProtected: true
+        path: '/dossiers-list',
+        isProtected: false
     },
     {
         label: 'Документы',

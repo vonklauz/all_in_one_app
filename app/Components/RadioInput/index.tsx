@@ -7,7 +7,7 @@ export const RadioInput = ({ id, title, choices, groups, }: IRadioProps) => {
 
     const renderOptions = () => (
         choices?.map(({ id: choiceId, label }) => (
-            <div className={styles.item}>
+            <div className={styles.item} key={choiceId}>
                 <input id={choiceId} className={styles.input} type="radio" value={label} name={id} />
                 <label htmlFor="o1_1" className={styles.label}>
                     <span className={styles.text}>{label}</span>
