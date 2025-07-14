@@ -125,10 +125,50 @@
     }
 }
 
+@media (max-width:30em) {
+    .icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.125rem;
+    }
+}
+
 @media (min-width: 20em) and (max-width: 78.5em) {
     @supports (font-size:clamp(1.125rem, 1.0822649573rem + 0.2136752137vw, 1.25rem)) {
         .icon {
             font-size: clamp(1.125rem, 1.0822649573rem + .2136752137vw, 1.25rem);
+        }
+    }
+
+    @supports not (font-size:clamp(1.125rem, 1.0822649573rem + 0.2136752137vw, 1.25rem)) {
+        .icon {
+            font-size: calc(1.125rem + .125 * (100vw - 20rem)/ 58.5)
+        }
+    }
+}
+
+@media (min-width:30em) and (max-width:62em) {
+    @supports (width:clamp(2.5rem, 1.9140625rem + 1.953125vw, 3.125rem)) {
+        .icon {
+            width: clamp(2.5rem, 1.9140625rem + 1.953125vw, 3.125rem)
+        }
+    }
+
+    @supports not (width:clamp(2.5rem, 1.9140625rem + 1.953125vw, 3.125rem)) {
+        .icon {
+            width: calc(2.5rem + .625 * (100vw - 30rem)/ 32)
+        }
+    }
+
+    @supports (height:clamp(2.5rem, 1.9140625rem + 1.953125vw, 3.125rem)) {
+        .icon {
+            height: clamp(2.5rem, 1.9140625rem + 1.953125vw, 3.125rem)
+        }
+    }
+
+    @supports not (height:clamp(2.5rem, 1.9140625rem + 1.953125vw, 3.125rem)) {
+        .icon {
+            height: calc(2.5rem + .625 * (100vw - 30rem)/ 32)
         }
     }
 }

@@ -1,5 +1,4 @@
-import { Button, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { useState } from 'react'
+import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 
 export const RegisterSuccessModal = ({ isOpen }: { isOpen: boolean }) => {
 
