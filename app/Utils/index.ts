@@ -25,7 +25,7 @@ export const handleLogoutSuccess = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('rawUser');
     sessionStorage.removeItem('user');
-    dispatch(setUser(getDefaultUser()));
+    dispatch(setUser({type: 'logout'}));
 }
 
 export const clearPhoneNumberString = (phone: string): string => phone.split('').filter((el) => !['(', ')', '-', ' '].includes(el)).join('');

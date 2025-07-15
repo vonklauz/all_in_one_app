@@ -3,6 +3,7 @@ import { authApi } from '~/Service/authApi';
 import { baseApi } from '~/Service/baseApi';
 import { userSlice } from './User/userSlice';
 import { tokenSlice } from './Token/tokenSlice';
+import { authMiddleware } from './middleware';
 
 export const store = configureStore({
     reducer: combineReducers({
@@ -16,7 +17,7 @@ export const store = configureStore({
             immutableCheck: false,
             serialazableCheck: false,
             thunk: true
-        }).concat([authApi.middleware, baseApi.middleware])
+        }).concat([authApi.middleware, baseApi.middleware, authMiddleware])
     }
 })
 
