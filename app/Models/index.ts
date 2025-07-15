@@ -146,6 +146,7 @@ export interface IDossierFormField {
     required: boolean;
     choices: IRadioChoice[];
     groups: any[];
+    value?: string;
 }
 
 export interface IDossierFormBlock {
