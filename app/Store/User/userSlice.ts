@@ -21,10 +21,10 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUser(state, action) {
-            state.user = { ...state.user, ...action.payload };
+            return { ...state, user: action.payload };
         },
         unsetUser(state) {
-            state = { ...initialState };
+            return { ...state, ...initialState };
         }
     }
 });

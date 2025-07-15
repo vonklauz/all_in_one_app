@@ -1,5 +1,4 @@
 import type { Middleware } from "@reduxjs/toolkit";
-import { useNavigate } from "react-router";
 
 interface IAction {
     type: string,
@@ -9,12 +8,11 @@ interface IAction {
 }
 
 export const authMiddleware: Middleware = () => (next) => (action) => {
-    //@ts-ignore
-    if (action.type === 'userSlice/setUser') {
-        //@ts-ignore
-        if (!action.payload.userId) {
-            const navigate = useNavigate();
-            navigate('/login')
+    const typedAction = action as IAction;
+    if (typedAction.type === 'userSlice/setUser') {
+        if (!typedAction.payload.userId) {
+            window.location.href = '/login';
+            return;
         }
     }
     return next(action);

@@ -34,7 +34,7 @@ export const UserComponent = () => {
                 if (!localUser) {
                     getUser('')
                 } else {
-                    dispatch(setUser(JSON.parse(localUser)));
+                    dispatch(setUser({...JSON.parse(localUser)}));
                 }
             } else {
                 if (!user.userId) {
