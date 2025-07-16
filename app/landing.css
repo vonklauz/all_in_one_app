@@ -1,3 +1,9 @@
+.allowance,
+.main-benefits {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
 .hero {
     color: var(--white);
     background: var(--blue-gradient)
