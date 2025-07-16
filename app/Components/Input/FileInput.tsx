@@ -48,7 +48,7 @@ export const FileInput = ({
                 <span className={`${styles.input} ${styles.inputLikeSpan}`} title={fileName} onClick={() => fileInputRef?.current?.click()}>{fileName ? fileName : `Выберите ${multiple ? 'до 10 файлов' : 'файл'}`}</span>
                 {children}
             </div>
-            {error && <span className={styles.error}>{error}</span>}
+            {error && <span className="error">{error}</span>}
         </div>
     )
 };

@@ -4,10 +4,11 @@ import { useRef, type ChangeEvent } from 'react';
 
 interface IRadioProps extends Omit<IDossierFormField, 'type' | 'length' | 'mask' | 'required'> {
     value?: string;
+    error?: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const RadioInput = ({ id, title, choices, value, onChange }: IRadioProps) => {
+export const RadioInput = ({ id, title, choices, value, onChange, error }: IRadioProps) => {
     const radioInputRef = useRef<HTMLInputElement | null>(null);
 
     const renderOptions = () => (
@@ -17,15 +18,11 @@ export const RadioInput = ({ id, title, choices, value, onChange }: IRadioProps)
                     id={choiceId + id}
                     className={styles.input}
                     type="radio"
-                    value={label}
+                    value={choiceId}
                     name={id}
-                    checked={value === label}
+                    checked={value === choiceId?.toString()}
                     ref={radioInputRef}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        console.log(e)
-                        onChange(e)
-
-                    }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 />
                 <label htmlFor={choiceId + id} className={styles.label}>
                     <span className={styles.text} onClick={() => radioInputRef?.current?.click()}>{label}</span>
@@ -40,6 +37,7 @@ export const RadioInput = ({ id, title, choices, value, onChange }: IRadioProps)
             <div className={styles.options}>
                 {renderOptions()}
             </div>
+            {error && <span className="error">{error}</span>}
         </div>
     )
 }

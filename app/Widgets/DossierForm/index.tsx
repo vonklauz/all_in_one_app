@@ -4,35 +4,37 @@ import { FormWrapper } from "~/Components/FormCustom/FormWrapper";
 import { Input } from "~/Components/Input";
 import { RadioInput } from "~/Components/RadioInput";
 import { FormSkeleton } from "~/Components/Skeleton/FormSkeleton";
-import type { IDossierFormSection } from "~/Models";
-import { dossierApi } from "~/Service/dossierApi"
-import { dispatch } from "~/Store";
-import { cloneDeep } from "~/Utils";
+import { useGetSchemaByIdQuery } from "~/Service/dossierApi"
+import { mapSchemaFromData } from "~/Utils/validation";
 
 export const DossierForm = () => {
-    const [form, setForm] = useState<IDossierFormSection>();
-    const [isLoading, setIsLoading] = useState(true);
+    const [form, setForm] = useState<Record<string, string>>({});
+    const [errors, setErrors] = useState<Record<string, string>>({});
     const url = new URL(window.location.href);
-    const formId = url.searchParams.get("id");
+    const formId = url.searchParams.get("id") as string;
+    const { data: formSchema, isLoading } = useGetSchemaByIdQuery({ schemaId: formId });
+    console.log('formSchema', formSchema?.data)
     console.log('form', form)
 
-    const getFormById = (id: string) => {
-        return dispatch(dossierApi.endpoints.getSchemaById.initiate({ schemaId: id }))
-    }
-
-    useEffect(() => {
-        if (formId) {
-            const getForm = async () => {
-                const response = await getFormById(formId);
-                if (response.data?.success) {
-                    setForm({ ...cloneDeep(response.data.data) })
-                    setIsLoading(false);
-                }
-            }
-            getForm()
+    const validateForm = () => {
+        if (!formSchema) {
+            return false;
         }
-
-    }, [formId])
+        const fieldsArr = formSchema?.data.blocks.map((block) => block.fields);
+        const validationSchema = mapSchemaFromData(fieldsArr);
+        try {
+            validationSchema.validateSync(form, { abortEarly: false })
+        } catch (err) {
+            const newErrors: Record<string, string> = {};
+            //@ts-expect-error
+            err.inner.forEach((e) => {
+                newErrors[e.path] = e.message;
+            });
+            console.log('newErrors', newErrors)
+            setErrors(newErrors);
+            return;
+        }
+    }
 
     if (isLoading) {
         return (
@@ -42,35 +44,46 @@ export const DossierForm = () => {
         )
     }
 
-    const onChange = (blockIndex: number, fieldIndex: number) => (e: ChangeEvent<HTMLInputElement>) => {
-        if (!form) {
-            return;
-        }
-        const newForm = cloneDeep(form);
-        newForm.blocks[blockIndex].fields[fieldIndex].value = e.target.value;
+    const onChange = (id: string) => (e: ChangeEvent<HTMLInputElement>) => {
+        const newForm = { ...form };
+        newForm[id] = e.target.value;
         setForm(newForm);
     }
 
-    if (form) {
+    if (formSchema?.data) {
         return (
             <div className="dossier-container">
                 <FormWrapper action={() => { }}>
-                    <FormItem title={form.form_title} key={form.schema_id}>
-                        {form.blocks.map((block, blockIndex) => (
-                            <Fragment key={block.block_title}>
-                                <h4 className="title text-lg mt-4">{block.block_title}</h4>
-                                {block.fields.map(({ id, title, type, ...props }, fieldIndex) => {
-                                    if (type === 'text') {
-                                        return <Input key={id} label={title} onChange={onChange(blockIndex, fieldIndex)} />
-                                    } else if (type === 'select') {
-                                        return <RadioInput {...{ id, title, ...props }} key={id} onChange={onChange(blockIndex, fieldIndex)} />
-                                    }
-                                })}
-                            </Fragment>
-
-                        ))}
+                    <FormItem title={formSchema?.data.form_title} key={formSchema?.data.schema_id}>
+                        <>
+                            {formSchema?.data.blocks.map((block, blockIndex) => (
+                                <Fragment key={block.block_title}>
+                                    <h4 className="title text-lg mt-4">{block.block_title}</h4>
+                                    {block.fields.map(({ id, title, type, ...props }, fieldIndex) => {
+                                        if (type === 'text') {
+                                            return <Input
+                                                key={id}
+                                                label={title}
+                                                onChange={onChange(id)}
+                                                value={form[id] ?? ''}
+                                                error={errors[id]}
+                                            />
+                                        } else if (type === 'select') {
+                                            return <RadioInput
+                                                {...{ id, title, ...props }}
+                                                key={id}
+                                                onChange={onChange(id)} value={form[id] ?? ''}
+                                                error={errors[id]}
+                                            />
+                                        }
+                                    })}
+                                </Fragment>
+                            ))}
+                            <button className="button button_green" type="button" onClick={validateForm}>Отправить</button>
+                        </>
                     </FormItem>
                 </FormWrapper>
+
             </div>
         )
     }

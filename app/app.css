@@ -263,6 +263,13 @@ img {
   color: var(--text-gray)
 }
 
+.error {
+    margin-top: 4px;
+    display: block;
+    color: var(--text-red);
+    font-size: .8rem;
+}
+
 @media (any-hover:hover) {
   .button:hover {
     background-color: var(--black-hover)

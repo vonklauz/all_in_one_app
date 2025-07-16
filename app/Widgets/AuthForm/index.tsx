@@ -58,10 +58,9 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
         try {
             CONFIG[mode].validationSchema.validateSync({ ...requestData }, { abortEarly: false })
         } catch (err) {
-            const newErrors = {};
+            const newErrors: Record<string, string> = {};
             //@ts-expect-error
             err.inner.forEach((e) => {
-                //@ts-expect-error
                 newErrors[e.path] = e.message;
             });
             setErrors(newErrors);

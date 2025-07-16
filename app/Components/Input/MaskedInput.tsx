@@ -43,7 +43,7 @@ export const MaskedInput = ({
                 />
                 {children}
             </div>
-            {error && <span className={styles.error}>{error}</span>}
+            {error && <span className="error">{error}</span>}
         </div>
     )
 };

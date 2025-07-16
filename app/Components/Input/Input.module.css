@@ -65,9 +65,3 @@
     content: "\e904";
 }
 
-.error {
-    margin-top: 4px;
-    display: block;
-    color: var(--text-red);
-    font-size: .8rem;
-}

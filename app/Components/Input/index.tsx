@@ -34,7 +34,7 @@ export const Input = ({
             >{label}</label>
             <div className={`${styles.inputWrapper} ${props.disabled ? styles.readOnly : ''}`}>
                 <input
-                    defaultValue={defaultValue || ''}
+                    defaultValue={defaultValue}
                     type={type}
                     name={name}
                     id={id}
@@ -46,7 +46,7 @@ export const Input = ({
                 />
                 {children}
             </div>
-            {error && <span className={styles.error}>{error}</span>}
+            {error && <span className="error">{error}</span>}
         </div>
     )
 };
