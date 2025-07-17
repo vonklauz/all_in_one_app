@@ -5,10 +5,11 @@ import { useRef, type ChangeEvent } from 'react';
 interface IRadioProps extends Omit<IDossierFormField, 'type' | 'length' | 'mask' | 'required'> {
     value?: string;
     error?: string;
+    disabled?: boolean;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const RadioInput = ({ id, title, choices, value, onChange, error }: IRadioProps) => {
+export const RadioInput = ({ id, title, choices, value, error, disabled, onChange }: IRadioProps) => {
     const radioInputRef = useRef<HTMLInputElement | null>(null);
 
     const renderOptions = () => (
@@ -25,7 +26,7 @@ export const RadioInput = ({ id, title, choices, value, onChange, error }: IRadi
                     onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 />
                 <label htmlFor={choiceId + id} className={styles.label}>
-                    <span className={styles.text} onClick={() => radioInputRef?.current?.click()}>{label}</span>
+                    <span className={styles.text} onClick={() => !disabled && radioInputRef?.current?.click()}>{label}</span>
                 </label>
             </div>
         ))

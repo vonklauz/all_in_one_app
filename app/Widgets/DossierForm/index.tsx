@@ -14,6 +14,7 @@ type DossierForm = ObjectWithProps;
 export const DossierForm = () => {
     const [form, setForm] = useState<DossierForm>({});
     const [isPrefilledForm, setPrefilledForm] = useState(false);
+    const [isFormChanhed, setFormChanged] = useState(false);
     const [errors, setErrors] = useState<ObjectWithProps>({});
 
     const url = new URL(window.location.href);
@@ -24,6 +25,10 @@ export const DossierForm = () => {
 
     const [saveForm, resultSaveForm] = useSaveFormMutation();
     const [updateForm, resultUpdateForm] = useUpdateFormMutation();
+
+    const isFormSubmiting = resultSaveForm.isLoading || resultUpdateForm.isLoading;
+    const isDisabledUI = isFormSubmiting || isPrefilledFormLoading;
+    const isAllowedToSubmit = !isDisabledUI && isFormChanhed;
 
     console.log('prefilledForm', prefilledForm)
     console.log('form', form)
@@ -94,6 +99,7 @@ export const DossierForm = () => {
         } else {
             saveForm(mappedForm);
         }
+        setFormChanged(false);
 
     }
 
@@ -109,6 +115,7 @@ export const DossierForm = () => {
         const newForm = { ...form };
         newForm[id] = e.target.value;
         setForm(newForm);
+        setFormChanged(true);
     }
 
     if (formSchema?.data) {
@@ -128,7 +135,7 @@ export const DossierForm = () => {
                                                 onChange={onChange(id)}
                                                 value={form[id] ?? ''}
                                                 error={errors[id]}
-                                                disabled={isPrefilledFormLoading}
+                                                disabled={isDisabledUI}
                                             />
                                         } else if (type === 'select') {
                                             return <RadioInput
@@ -136,6 +143,7 @@ export const DossierForm = () => {
                                                 key={id}
                                                 onChange={onChange(id)} value={form[id] ?? ''}
                                                 error={errors[id]}
+                                                disabled={isDisabledUI}
                                             />
                                         }
                                     })}
@@ -144,7 +152,14 @@ export const DossierForm = () => {
                             <button
                                 className="button button_green w-full lg:w-50"
                                 type="button"
-                                onClick={validateForm}>Отправить</button>
+                                onClick={(e) => {
+                                    if (isAllowedToSubmit) {
+                                        validateForm()
+                                    }
+                                }}
+                                disabled={isDisabledUI}>
+                                {!isDisabledUI ? 'Отправить' : 'Отправка...'}
+                            </button>
                         </>
                     </FormItem>
                 </FormWrapper>
