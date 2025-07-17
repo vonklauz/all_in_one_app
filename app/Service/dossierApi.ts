@@ -1,4 +1,4 @@
-import type { IBaseSuccessResponse, IDocumentsSection, IDossierFormSection, IFormSchema, IUserDocument } from "~/Models";
+import type { IBaseSuccessResponse, IDossierFormSection, IFormSchema, IDosserForm } from "~/Models";
 import { baseApi } from "./baseApi";
 
 export const dossierApi = baseApi.injectEndpoints({
@@ -9,10 +9,30 @@ export const dossierApi = baseApi.injectEndpoints({
                 method: 'GET',
             })
         }),
-        getSchemaById: builder.query<IBaseSuccessResponse<IDossierFormSection>, { schemaId: string }>({
-            query: ({ schemaId }) => ({
+        getSchemaById: builder.query<IBaseSuccessResponse<IDossierFormSection>, string>({
+            query: (schemaId) => ({
                 url: `forms/schemas/${schemaId}`,
                 method: 'GET',
+            })
+        }),
+        getPrefilledForm: builder.query<IBaseSuccessResponse<IDosserForm>, string>({
+            query: (schemaId) => ({
+                url: `forms/${schemaId}`,
+                method: 'GET',
+            })
+        }),
+        saveForm: builder.mutation<IBaseSuccessResponse<null>, IDosserForm>({
+            query: (form) => ({
+                url: `forms`,
+                method: 'POST',
+                body: form
+            })
+        }),
+        updateForm: builder.mutation<IBaseSuccessResponse<null>, { form: Partial<IDosserForm>, formId: string | undefined }>({
+            query: ({ form, formId }) => ({
+                url: `forms/${formId}`,
+                method: 'PUT',
+                body: form
             })
         }),
     })
@@ -21,4 +41,7 @@ export const dossierApi = baseApi.injectEndpoints({
 export const {
     useGetFormSchemasQuery,
     useGetSchemaByIdQuery,
+    useGetPrefilledFormQuery,
+    useSaveFormMutation,
+    useUpdateFormMutation,
 } = dossierApi;

@@ -1,6 +1,6 @@
 import { object, string } from 'yup';
 import { CYRILLIC_REGEXP, PHONE_REGEXP } from './regexps';
-import type { IDossierFormField } from '~/Models';
+import type { IDossierFormField, ObjectWithProps } from '~/Models';
 
 const REQUIRED_ERROR_MESSAGE = 'Поле обязательно для заполнения';
 
@@ -40,7 +40,7 @@ export const registerSchema = object({
  * @param data массив полей форм заполнения анкеты.
  */
 export const mapSchemaFromData = (data:  IDossierFormField[][]) => {
-    const schema: Record<string, any> = {};
+    const schema: ObjectWithProps = {};
 
     data.forEach((fields) => {
         fields.forEach(({id, required, length, title}) => {

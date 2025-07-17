@@ -1,13 +1,14 @@
 import { useActionState, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router"
+import type { ValidationError } from "yup"
 import { FormCustom } from "~/Components/FormCustom"
 import { Input } from "~/Components/Input"
 import { InputPassword } from "~/Components/Input/InputPassword"
 import { PhoneInput } from "~/Components/Input/PhoneInput"
 import { RegisterSuccessModal } from "~/Components/Modal/RegisterSuccessModal"
 import { REDIRECT_TIMING } from "~/Consts"
-import type { LoginResponse, RegisterData, User } from "~/Models"
+import type { LoginResponse, ObjectWithProps, RegisterData, User } from "~/Models"
 import { useLoginMutation, useRegisterMutation } from "~/Service/authApi"
 import { setTokens } from "~/Store/Token/tokenSlice"
 import { getDefaultUser } from "~/Store/User/userSlice"
@@ -58,13 +59,12 @@ export const AuthForm = ({ mode }: IAuthFormProps) => {
         try {
             CONFIG[mode].validationSchema.validateSync({ ...requestData }, { abortEarly: false })
         } catch (err) {
-            const newErrors: Record<string, string> = {};
-            //@ts-expect-error
-            err.inner.forEach((e) => {
-                newErrors[e.path] = e.message;
+            const validationErrors = err as ValidationError;
+            const newErrors: ObjectWithProps = {};
+            validationErrors.inner.forEach((e) => {
+                newErrors[e.path as string] = e.message;
             });
             setErrors(newErrors);
-            return;
         }
         setErrors(null);
         request(requestData)

@@ -4,14 +4,21 @@ export type Link = {
     isProtected?: boolean
 }
 
+export type ObjectWithProps = Record<string, any>;
+
 export type FormAction = (formData: FormData) => void;
+
+export type ServerError = {
+    code: number,
+    message: ObjectWithProps,
+}
 
 /**
  * Базовый тип для ответов от сервера.
  */
 export interface IBaseSuccessResponse<T> {
     success: boolean;
-    error?: string;
+    error?: ServerError;
     data: T;
 }
 
@@ -157,4 +164,14 @@ export interface IDossierFormBlock {
 export interface IDossierFormSection extends IFormSchema {
     number_form: number;
     blocks: IDossierFormBlock[];
+}
+
+export interface IDosserForm {
+    schema_id: string;
+    form_id?: string;
+    user_id?: string;
+    values: {
+        field_id: string;
+        value: string;
+    }[];
 }

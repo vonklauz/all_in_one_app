@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { parseJwt } from "~/Utils";
 import { AuthForm } from "~/Widgets/AuthForm";
 
 const Register = () => {
