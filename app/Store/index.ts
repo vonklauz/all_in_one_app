@@ -3,7 +3,7 @@ import { authApi } from '~/Service/authApi';
 import { baseApi } from '~/Service/baseApi';
 import { userSlice } from './User/userSlice';
 import { tokenSlice } from './Token/tokenSlice';
-import { authMiddleware } from './middleware';
+import { authMiddleware } from './User/middleware';
 
 export const store = configureStore({
     reducer: combineReducers({

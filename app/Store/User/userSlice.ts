@@ -19,14 +19,20 @@ const initialState = {
 export const userSlice = createSlice({
     name: 'userSlice',
     initialState,
+    selectors: {
+        getUser(state) {
+            return state.user;
+        },
+    },
     reducers: {
         setUser(state, action) {
-            return { ...state, user: action.payload };
+            state.user = action.payload;
         },
         unsetUser(state) {
-            return { ...state, ...initialState };
+            state.user = initialState.user;
         }
     }
 });
 
 export const { setUser, unsetUser } = userSlice.actions;
+export const { getUser: getUserFromStore } = userSlice.selectors;

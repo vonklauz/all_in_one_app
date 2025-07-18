@@ -4,14 +4,13 @@ import styles from './User.module.css'
 import { useEffect, useState } from 'react';
 import { UserThumb } from './UserThumb';
 import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '~/Store';
-import { setUser } from '~/Store/User/userSlice';
+import { getUserFromStore, setUser } from '~/Store/User/userSlice';
 import { useLogoutMutation } from '~/Service/authApi';
 import { handleLogoutSuccess } from '~/Utils';
 
 export const UserComponent = () => {
     const [isRendering, setIsRendering] = useState(true);
-    const user = useSelector((state: RootState) => state.userSlice.user);
+    const user = useSelector(getUserFromStore);
     const dispatch = useDispatch();
     const [getUser, resultGetUser] = useGetUserMutation();
     const [logoff, resultLogoff] = useLogoutMutation();
