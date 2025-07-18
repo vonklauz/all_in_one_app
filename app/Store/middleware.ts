@@ -1,6 +1,6 @@
 import type { Middleware } from "@reduxjs/toolkit";
 
-interface IAction {
+type Action = {
     type: string,
     payload: {
         userId: string
@@ -8,7 +8,7 @@ interface IAction {
 }
 
 export const authMiddleware: Middleware = () => (next) => (action) => {
-    const typedAction = action as IAction;
+    const typedAction = action as Action;
     if (typedAction.type === 'userSlice/setUser') {
         if (!typedAction.payload.userId) {
             window.location.href = '/login';

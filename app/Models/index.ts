@@ -4,7 +4,7 @@ export type Link = {
     isProtected?: boolean
 }
 
-export type ObjectWithProps = Record<string, any>;
+export type ObjectWithProps<T = any> = Record<string, T>;
 
 export type FormAction = (formData: FormData) => void;
 

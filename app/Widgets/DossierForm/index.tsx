@@ -9,13 +9,13 @@ import type { IDosserForm, ObjectWithProps } from "~/Models";
 import { useGetPrefilledFormQuery, useGetSchemaByIdQuery, useSaveFormMutation, useUpdateFormMutation } from "~/Service/dossierApi"
 import { mapSchemaFromData } from "~/Utils/validation";
 
-type DossierForm = ObjectWithProps;
+type DossierForm = ObjectWithProps<string>;
 
 export const DossierForm = () => {
     const [form, setForm] = useState<DossierForm>({});
     const [isPrefilledForm, setPrefilledForm] = useState(false);
     const [isFormChanhed, setFormChanged] = useState(false);
-    const [errors, setErrors] = useState<ObjectWithProps>({});
+    const [errors, setErrors] = useState<ObjectWithProps<string>>({});
 
     const url = new URL(window.location.href);
     const formId = url.searchParams.get("id") as string;
@@ -49,7 +49,7 @@ export const DossierForm = () => {
     useEffect(() => {
         const serverErrors = resultSaveForm?.data?.error?.message ?? resultUpdateForm?.data?.error?.message;
         if (serverErrors) {
-            const newErrors: ObjectWithProps = {};
+            const newErrors: ObjectWithProps<string> = {};
             for (const error in serverErrors) {
                 newErrors[error] = serverErrors[error];
             }
@@ -84,7 +84,7 @@ export const DossierForm = () => {
             validationSchema.validateSync(form, { abortEarly: false })
         } catch (err) {
             const validationErrors = err as ValidationError;
-            const newErrors: ObjectWithProps = {};
+            const newErrors: ObjectWithProps<string> = {};
             validationErrors.inner.forEach((e) => {
                 newErrors[e.path as string] = e.message;
             });
